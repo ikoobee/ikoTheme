@@ -10,7 +10,7 @@ const cover = coverVisual(post.id);
 ---
 
 <article class="card clickable post-card reveal">
-  <a href={`/posts/${post.id}/`} class="cover" style={`background:${cover.g}`} aria-label={post.data.title}>
+  <a href={`/posts/${post.id}/`} class="cover" style={`background:${cover.g}`} data-glyph={cover.glyph} aria-label={post.data.title}>
     {cover.glyph}{post.data.pinned && <span class="ribbon">置顶</span>}
   </a>
   <div class="body">

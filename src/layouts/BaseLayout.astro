@@ -86,6 +86,30 @@ const { title, description = SITE.description } = Astro.props;
       );
       backTop?.addEventListener("click", () => scrollTo({ top: 0, behavior: "smooth" }));
 
+      // code block copy button (client-side enhancement over shiki output)
+      document.querySelectorAll("pre.astro-code").forEach((pre) => {
+        const parent = pre.parentNode;
+        if (!parent) return;
+        const wrap = document.createElement("div");
+        wrap.className = "code-wrap";
+        parent.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "code-copy";
+        btn.textContent = "复制";
+        btn.addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(pre.textContent ?? "");
+            btn.textContent = "已复制";
+          } catch {
+            btn.textContent = "复制失败";
+          }
+          setTimeout(() => (btn.textContent = "复制"), 1600);
+        });
+        wrap.appendChild(btn);
+      });
+
       // reveal on scroll
       const io = new IntersectionObserver(
         (entries) => {

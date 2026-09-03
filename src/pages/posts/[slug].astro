@@ -37,6 +37,7 @@ const cover = coverVisual(post.id);
 
 <BaseLayout title={post.data.title} description={post.data.desc}>
   <div class="view-pad container">
+    <div id="readProgress"></div>
     <div class="article-layout">
       <article>
         <div class="article-head">
@@ -51,7 +52,7 @@ const cover = coverVisual(post.id);
           </div>
         </div>
 
-        <div class="article-cover" style={`background:${cover.g}`}>
+        <div class="article-cover" style={`background:${cover.g}`} data-glyph={cover.glyph}>
           {cover.glyph}
         </div>
 
@@ -133,3 +134,17 @@ const cover = coverVisual(post.id);
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  // reading progress bar (article page only)
+  const bar = document.getElementById("readProgress");
+  if (bar) {
+    const update = () => {
+      const h = document.documentElement;
+      const max = h.scrollHeight - innerHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+    };
+    addEventListener("scroll", update, { passive: true });
+    update();
+  }
+</script>

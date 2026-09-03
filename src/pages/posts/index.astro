@@ -13,18 +13,41 @@ const topTags = [...tm.entries()].sort((a, b) => b[1] - a[1]);
   <div class="view-pad container">
     <div class="page-head">
       <h1>文章 <span class="grad-text">Posts</span></h1>
-      <p>共 {posts.length} 篇 · {tm.size} 个标签</p>
+      <p id="postCount">共 {posts.length} 篇 · {tm.size} 个标签</p>
     </div>
+
+    <div class="filter-bar">
+      <button class="chip on" data-cat-btn="all">
+        全部 · {posts.length}
+      </button>
+      {
+        CATEGORIES.map((c) => (
+          <button class={`chip cat-${c}`} data-cat-btn={c}>
+            {c} · {posts.filter((p) => p.data.category === c).length}
+          </button>
+        ))
+      }
+    </div>
+    <div class="filter-bar" id="tagBar" style="display:none;margin:-12px 0 14px">
+      <button class="chip on" id="clearTag"></button>
+    </div>
+
     <div class="posts-layout">
       <div>
         {
           posts.map((p) => {
             const cover = coverVisual(p.id);
             return (
-              <article class="card clickable post-row reveal">
+              <article
+                class="card clickable post-row reveal"
+                data-post-row
+                data-cat={p.data.category}
+                data-tags={p.data.tags.join(",")}
+              >
                 <a
                   class="thumb"
                   style={`background:${cover.g}`}
+                  data-glyph={cover.glyph}
                   href={`/posts/${p.id}/`}
                   aria-label={p.data.title}
                 >
@@ -40,7 +63,13 @@ const topTags = [...tm.entries()].sort((a, b) => b[1] - a[1]);
                   </div>
                   <h3><a href={`/posts/${p.id}/`}>{p.data.title}</a></h3>
                   <p class="desc">{p.data.desc}</p>
-                  <div class="tags-line">{p.data.tags.map((t) => <span># {t}</span>)}</div>
+                  <div class="tags-line">
+                    {p.data.tags.map((t) => (
+                      <button class="tag-btn" data-tag-btn={t}>
+                        # {t}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </article>
             );
@@ -50,21 +79,118 @@ const topTags = [...tm.entries()].sort((a, b) => b[1] - a[1]);
       <div class="posts-aside">
         <div class="card aside-block reveal">
           <h4><Icon name="folder" /> 分类</h4>
-          {CATEGORIES.map((c) => (
-            <div class={`cat-row cat-${c}`}>
-              <span class="cdot" />
-              {c}
-              <b>{posts.filter((p) => p.data.category === c).length}</b>
-            </div>
-          ))}
+          {
+            CATEGORIES.map((c) => (
+              <button class={`cat-row cat-${c}`} data-cat-btn={c}>
+                <span class="cdot" />
+                {c}
+                <b>{posts.filter((p) => p.data.category === c).length}</b>
+              </button>
+            ))
+          }
         </div>
         <div class="card aside-block reveal">
           <h4><Icon name="tag" /> 标签</h4>
           <div class="tag-cloud">
-            {topTags.map(([t, n]) => <span class="chip">{t} {n}</span>)}
+            {
+              topTags.map(([t, n]) => (
+                <button class="chip" data-tag-btn={t}>
+                  {t} {n}
+                </button>
+              ))
+            }
           </div>
         </div>
       </div>
     </div>
   </div>
 </BaseLayout>
+
+<style>
+  .tag-btn {
+    font-size: 12px;
+    color: var(--text-3);
+    transition: color 0.2s;
+  }
+  .tag-btn:hover {
+    color: var(--brand);
+  }
+</style>
+
+<script>
+  interface Filter {
+    cat: string;
+    tag: string | null;
+  }
+  const rows = Array.from(document.querySelectorAll<HTMLElement>("[data-post-row]"));
+  const catBtns = document.querySelectorAll<HTMLElement>("[data-cat-btn]");
+  const tagBtns = document.querySelectorAll<HTMLElement>("[data-tag-btn]");
+  const tagBar = document.getElementById("tagBar");
+  const clearTag = document.getElementById("clearTag");
+  const countEl = document.getElementById("postCount");
+
+  function apply(f: Filter) {
+    let shown = 0;
+    for (const r of rows) {
+      const okCat = f.cat === "all" || r.dataset.cat === f.cat;
+      const tags = (r.dataset.tags ?? "").split(",").filter(Boolean);
+      const okTag = !f.tag || tags.includes(f.tag);
+      const ok = okCat && okTag;
+      r.style.display = ok ? "" : "none";
+      if (ok) shown++;
+    }
+    catBtns.forEach((c) => c.classList.toggle("on", (c.dataset.catBtn ?? "all") === f.cat));
+    tagBtns.forEach((c) => c.classList.toggle("on", !!f.tag && c.dataset.tagBtn === f.tag));
+    if (tagBar) tagBar.style.display = f.tag ? "" : "none";
+    if (clearTag && f.tag) clearTag.textContent = `# ${f.tag} ✕`;
+    if (countEl)
+      countEl.textContent = f.cat === "all" && !f.tag
+        ? `共 ${rows.length} 篇 · 当前显示 ${shown} 篇`
+        : `共 ${rows.length} 篇 · 当前显示 ${shown} 篇（筛选中）`;
+  }
+
+  function parseHash(): Filter {
+    const h = decodeURIComponent(location.hash.replace(/^#/, ""));
+    const m = /^(cat|tag)=(.+)$/.exec(h);
+    if (!m) return { cat: "all", tag: null };
+    return m[1] === "cat" ? { cat: m[2], tag: null } : { cat: "all", tag: m[2] };
+  }
+
+  function writeHash(f: Filter) {
+    const hash = f.tag
+      ? `#tag=${encodeURIComponent(f.tag)}`
+      : f.cat !== "all"
+        ? `#cat=${f.cat}`
+        : "/posts/";
+    history.replaceState(null, "", hash);
+  }
+
+  let cur = parseHash();
+  apply(cur);
+
+  catBtns.forEach((c) =>
+    c.addEventListener("click", () => {
+      cur = { cat: c.dataset.catBtn ?? "all", tag: null };
+      writeHash(cur);
+      apply(cur);
+    }),
+  );
+  tagBtns.forEach((c) =>
+    c.addEventListener("click", () => {
+      const t = c.dataset.tagBtn ?? null;
+      cur = { cat: "all", tag: cur.tag === t ? null : t };
+      writeHash(cur);
+      apply(cur);
+    }),
+  );
+  clearTag?.addEventListener("click", () => {
+    cur = { cat: "all", tag: null };
+    writeHash(cur);
+    apply(cur);
+  });
+  // react to hash changes (e.g. navigating here with a filter preselected)
+  addEventListener("hashchange", () => {
+    cur = parseHash();
+    apply(cur);
+  });
+</script>

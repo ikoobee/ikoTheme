@@ -17,13 +17,30 @@ const rest = projects.filter((p) => !p.data.featured);
       <p>造过的轮子，踩过的坑，都在这里留档</p>
     </div>
 
+    <div class="filter-bar">
+      <button class="chip on" data-proj-filter="all">
+        全部 · {projects.length}
+      </button>
+      {
+        Object.keys(STATUS_LABEL).map((s) => {
+          const n = projects.filter((p) => p.data.status === s).length;
+          return n > 0 ? (
+            <button class={`chip st-${s}`} data-proj-filter={s}>
+              {STATUS_LABEL[s]} · {n}
+            </button>
+          ) : null;
+        })
+      }
+    </div>
+    <div class="empty-hint" id="projEmpty" style="display:none">该状态下暂无项目</div>
+
     {
       featured.length > 0 && (
         <div class="proj-featured">
           {featured.map((pr) => {
             const logo = coverVisual(pr.data.name);
             return (
-              <article class="card proj-fcard reveal">
+              <article class="card proj-fcard reveal" data-status={pr.data.status}>
                 <div class="top">
                   <div class="logo" style={`background:${logo.g}`}>{logo.glyph}</div>
                   <div>
@@ -70,3 +87,23 @@ const rest = projects.filter((p) => !p.data.featured);
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  // client-side status filter (all cards are in the DOM, zero framework)
+  const chips = document.querySelectorAll<HTMLElement>("[data-proj-filter]");
+  const cards = document.querySelectorAll<HTMLElement>("[data-status]");
+  const empty = document.getElementById("projEmpty");
+  const apply = (f: string) => {
+    let shown = 0;
+    cards.forEach((c) => {
+      const ok = f === "all" || c.dataset.status === f;
+      c.style.display = ok ? "" : "none";
+      if (ok) shown++;
+    });
+    chips.forEach((c) => c.classList.toggle("on", (c.dataset.projFilter ?? "all") === f));
+    if (empty) empty.style.display = shown ? "none" : "";
+  };
+  chips.forEach((c) =>
+    c.addEventListener("click", () => apply(c.dataset.projFilter ?? "all")),
+  );
+</script>

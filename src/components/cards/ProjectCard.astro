@@ -11,7 +11,7 @@ const logo = coverVisual(project.data.name);
 const p = project.data;
 ---
 
-<article class="card proj-card reveal">
+<article class="card proj-card reveal" data-status={p.status}>
   <div class="top">
     <div class="logo" style={`background:${logo.g}`}>{logo.glyph}</div>
     <h3>

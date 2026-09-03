@@ -1,12 +1,14 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Icon from "../../components/base/Icon.astro";
+import PostRow from "../../components/cards/PostRow.astro";
 import { CATEGORIES } from "../../config/site";
-import { postsByDate, tagMap, readingTime, fmtDate, coverVisual } from "../../utils/content";
+import { postsByDate, tagMap, POSTS_PER_PAGE } from "../../utils/content";
 
 const posts = await postsByDate();
 const tm = tagMap(posts);
 const topTags = [...tm.entries()].sort((a, b) => b[1] - a[1]);
+const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
 ---
 
 <BaseLayout title="文章" description={`全部文章 · 共 ${posts.length} 篇`}>
@@ -34,46 +36,18 @@ const topTags = [...tm.entries()].sort((a, b) => b[1] - a[1]);
 
     <div class="posts-layout">
       <div>
+        {posts.map((p) => <PostRow post={p} />)}
         {
-          posts.map((p) => {
-            const cover = coverVisual(p.id);
-            return (
-              <article
-                class="card clickable post-row reveal"
-                data-post-row
-                data-cat={p.data.category}
-                data-tags={p.data.tags.join(",")}
-              >
-                <a
-                  class="thumb"
-                  style={`background:${cover.g}`}
-                  data-glyph={cover.glyph}
-                  href={`/posts/${p.id}/`}
-                  aria-label={p.data.title}
-                >
-                  {cover.glyph}
-                </a>
-                <div style="min-width:0;flex:1">
-                  <div class="meta-line">
-                    <span class={`cat cat-${p.data.category}`}>{p.data.category}</span>
-                    <span>{fmtDate(p.data.date)}</span>
-                    <span>
-                      <Icon name="clock" /> {readingTime(p)} min
-                    </span>
-                  </div>
-                  <h3><a href={`/posts/${p.id}/`}>{p.data.title}</a></h3>
-                  <p class="desc">{p.data.desc}</p>
-                  <div class="tags-line">
-                    {p.data.tags.map((t) => (
-                      <button class="tag-btn" data-tag-btn={t}>
-                        # {t}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </article>
-            );
-          })
+          totalPages > 1 && (
+            <div class="pagination">
+              <span class="page-info">
+                第 1 / {totalPages} 页
+              </span>
+              <a class="chip" href="/posts/2/">
+                下一页 <Icon name="right" />
+              </a>
+            </div>
+          )
         }
       </div>
       <div class="posts-aside">
@@ -105,17 +79,6 @@ const topTags = [...tm.entries()].sort((a, b) => b[1] - a[1]);
     </div>
   </div>
 </BaseLayout>
-
-<style>
-  .tag-btn {
-    font-size: 12px;
-    color: var(--text-3);
-    transition: color 0.2s;
-  }
-  .tag-btn:hover {
-    color: var(--brand);
-  }
-</style>
 
 <script>
   interface Filter {

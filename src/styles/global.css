@@ -412,6 +412,52 @@ footer { border-top: 1px solid var(--border); background: var(--card); margin-to
 .empty-hint { padding: 36px 0; text-align: center; color: var(--text-3); font-size: 13.5px; }
 
 /* ============================================================
+   M3 additions: search modal / donate modal / pagination
+   ============================================================ */
+.modal-mask { position: fixed; inset: 0; z-index: 1100; background: rgba(8, 11, 20, 0.55); backdrop-filter: blur(4px); display: none; align-items: flex-start; justify-content: center; padding: 12vh 20px 20px; }
+.modal-mask.open { display: flex; animation: fadeIn 0.18s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pop { from { opacity: 0; transform: translateY(-12px) scale(0.98); } to { opacity: 1; transform: none; } }
+
+.search-modal { width: min(640px, 100%); background: var(--card); border: 1px solid var(--border-2); border-radius: 18px; box-shadow: var(--shadow-lg); overflow: hidden; animation: pop 0.22s cubic-bezier(0.22, 0.8, 0.36, 1); }
+.search-input-row { display: flex; align-items: center; gap: 12px; padding: 15px 18px; border-bottom: 1px solid var(--border); }
+.search-input-row .search-ic { color: var(--brand); font-size: 18px; display: flex; }
+.search-input-row input { flex: 1; border: none; background: none; color: var(--text); font-size: 15.5px; font-family: inherit; }
+.search-input-row input:focus { outline: none; }
+kbd { font-size: 11px; color: var(--text-3); border: 1px solid var(--border); border-radius: 6px; padding: 2px 7px; font-family: ui-monospace, Consolas, monospace; }
+.search-results { max-height: 52vh; overflow: auto; padding: 8px; }
+.sr-item { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 12px; }
+.sr-item .sr-body { flex: 1; min-width: 0; }
+.sr-item .sr-title { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sr-item .sr-title mark, .sr-item .sr-sub mark { background: transparent; color: var(--brand); font-weight: 700; }
+.sr-item .sr-sub { font-size: 12px; color: var(--text-3); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.sr-item:hover, .sr-item.sel { background: var(--brand-soft); }
+.sr-empty { padding: 36px 0; text-align: center; color: var(--text-3); font-size: 13.5px; }
+.sr-empty code { background: var(--bg-soft); border-radius: 6px; padding: 1px 6px; font-family: ui-monospace, Consolas, monospace; color: var(--brand); font-size: 12px; }
+.sr-footer { display: flex; gap: 16px; padding: 10px 16px; border-top: 1px solid var(--border); font-size: 11.5px; color: var(--text-3); }
+.sr-footer span { display: inline-flex; gap: 5px; align-items: center; }
+
+.like-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 22px; border-radius: 999px; border: 1px solid var(--border-2); color: var(--text-2); font-size: 14px; transition: all 0.2s; }
+.like-btn:hover { color: var(--brand); border-color: var(--brand); }
+.donate-btn { color: #f43f5e; border-color: #fda4af; background: rgba(244, 63, 94, 0.06); }
+.donate-btn:hover { color: #e11d48; background: rgba(244, 63, 94, 0.13); border-color: #fb7185; }
+.donate-modal { width: min(560px, 100%); background: var(--card); border: 1px solid var(--border-2); border-radius: 18px; box-shadow: var(--shadow-lg); padding: 26px; animation: pop 0.22s cubic-bezier(0.22, 0.8, 0.36, 1); }
+.donate-modal h3 { font-size: 18px; display: flex; align-items: center; gap: 9px; }
+.donate-modal .dnote { font-size: 13px; color: var(--text-3); margin: 8px 0 18px; }
+.qr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.qr-card { padding: 16px 12px; text-align: center; border: 1px solid var(--border); border-radius: 14px; background: var(--card-soft); }
+.qr-card img { width: 180px; height: 180px; object-fit: contain; border-radius: 10px; background: #fff; padding: 8px; display: block; margin: 0 auto 10px; }
+.qr-card b { font-size: 14px; display: block; }
+.qr-card span { font-size: 11.5px; color: var(--text-3); }
+.donate-foot { margin-top: 16px; text-align: center; font-size: 11.5px; color: var(--text-3); }
+@media (max-width: 860px) { .qr-grid { grid-template-columns: 1fr; } }
+
+.pagination { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.page-info { font-size: 12.5px; color: var(--text-3); }
+.tag-btn { font-size: 12px; color: var(--text-3); transition: color 0.2s; }
+.tag-btn:hover { color: var(--brand); }
+
+/* ============================================================
    responsive
    ============================================================ */
 @media (max-width: 1100px) {

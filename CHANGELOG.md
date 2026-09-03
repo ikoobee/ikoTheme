@@ -20,3 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   posts category/tag filtering with shareable hash state (`#cat=` / `#tag=`)
 - Comments: pluggable adapters for giscus / Waline / Twikoo — single active provider
   via config, lazy-loaded on scroll, giscus & Waline dark-mode synced
+  (setup guide in docs/comments.md)
+- Search: Pagefind full-site search modal (`Ctrl/⌘+K` or `/`), index built post-build
+- RSS full-text feed (`/rss.xml`), SEO meta + default OG image, sitemap link in head
+- Donation dialog on article pages (opt-in via `DONATE` config, user-supplied QR images)
+- Posts pagination (`/posts/2/`+, 6 per page) with shared PostRow component
+- Repo: bilingual Sponsor sections (EN → GitHub Sponsors link, zh → folded QR images
+  from the sponsor-assets masters), FUNDING.yml pointing to ikoobee.com/sponsor

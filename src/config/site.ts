@@ -95,6 +95,18 @@ export const COMMENTS: CommentsConfig = {
   },
 };
 
+/**
+ * Donation dialog on article pages — disabled by default.
+ * Put YOUR QR images at public/donate/ (never commit real payment QRs
+ * you don't want public), then flip `enabled`.
+ */
+export const DONATE = {
+  enabled: false,
+  wechat: "/donate/wechat.png",
+  alipay: "/donate/alipay.png",
+  note: "如果文章帮到了你，可以请我喝杯咖啡 ☕",
+};
+
 /** zh-CN labels for project statuses */
 export const STATUS_LABEL: Record<string, string> = {
   wip: "进行中",

@@ -6,6 +6,9 @@ export type Project = CollectionEntry<"projects">;
 export type Moment = CollectionEntry<"moments">;
 export type Friend = CollectionEntry<"friends">;
 
+/** posts per page — shared by /posts/ (page 1) and /posts/[...page] (pages ≥ 2) */
+export const POSTS_PER_PAGE = 6;
+
 /** all published posts, newest first */
 export async function postsByDate(): Promise<Post[]> {
   return (await getCollection("posts", (p) => !p.data.draft)).sort(

@@ -36,14 +36,26 @@ npm run dev        # http://localhost:4321
 
 站点身份（名称、作者、导航、签名档……）统一在
 [`src/config/site.ts`](src/config/site.ts) 一处配置；评论系统同样在此切换：
-内置 **giscus / Waline / Twikoo** 三种适配器，`COMMENTS.provider` 三选一开启，
-未启用的适配器不进入客户端产物，全部懒加载。
+内置 **giscus / Waline / Twikoo** 三种适配器，`COMMENTS.provider` 三选一开启
+（启用指南见 [docs/comments.md](docs/comments.md)），未启用的适配器不进入客户端
+产物，全部懒加载。站内全文搜索（Pagefind）由 `npm run build` 自动生成索引。
 
 ```bash
-npm run build      # 产物输出 dist/
+npm run build      # 构建产物到 dist/，并生成 Pagefind 搜索索引
+npm run preview    # 本地预览构建产物（可体验搜索/RSS）
 npm run check      # astro check（类型 + 内容 schema 校验）
 ```
 
 ## 许可证
 
 [MIT](LICENSE) © 2026 Ethan (ikoobee)
+
+## ☕ Sponsor / 赞赏
+
+如果这个主题帮你更快搭好了博客，欢迎请作者喝杯咖啡 ☕
+
+<details>
+<summary>赞赏码 / Donation</summary>
+<img src="docs/images/donate-wechat.png" width="220" alt="微信赞赏码" />
+<img src="docs/images/donate-alipay.png" width="220" alt="支付宝收钱码" />
+</details>

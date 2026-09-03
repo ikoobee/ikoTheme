@@ -1,0 +1,50 @@
+---
+/**
+ * Donation dialog on article pages — opt-in via DONATE config.
+ * QR images are user-supplied at public/donate/*; the theme ships none.
+ */
+import { DONATE } from "../../config/site";
+import Icon from "./Icon.astro";
+---
+
+{
+  DONATE.enabled && (
+    <>
+      <button class="like-btn donate-btn" id="donateBtn" title="赞赏支持">
+        <Icon name="coffee" /> 赞赏支持
+      </button>
+
+      <div class="modal-mask" id="donateMask" role="dialog" aria-modal="true" aria-label="赞赏支持">
+        <div class="donate-modal">
+          <h3>☕ 赞赏支持</h3>
+          <p class="dnote">{DONATE.note}</p>
+          <div class="qr-grid">
+            <div class="qr-card">
+              <img src={DONATE.wechat} alt="微信赞赏二维码" loading="lazy" />
+              <b>微信赞赏</b>
+              <span>微信扫一扫</span>
+            </div>
+            <div class="qr-card">
+              <img src={DONATE.alipay} alt="支付宝收钱码" loading="lazy" />
+              <b>支付宝赞赏</b>
+              <span>支付宝扫一扫</span>
+            </div>
+          </div>
+          <p class="donate-foot">二维码由站点部署者自备（public/donate/），主题不带任何收款码</p>
+        </div>
+      </div>
+    </>
+  )
+}
+
+<script>
+  const btn = document.getElementById("donateBtn");
+  const mask = document.getElementById("donateMask");
+  btn?.addEventListener("click", () => mask?.classList.add("open"));
+  mask?.addEventListener("click", (e) => {
+    if (e.target === mask) mask.classList.remove("open");
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") mask?.classList.remove("open");
+  });
+</script>

@@ -1,0 +1,56 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Icon from "../../components/base/Icon.astro";
+import PostRow from "../../components/cards/PostRow.astro";
+import { postsByDate, POSTS_PER_PAGE, type Post } from "../../utils/content";
+
+export async function getStaticPaths() {
+  const all = await postsByDate();
+  const totalPages = Math.ceil(all.length / POSTS_PER_PAGE);
+  // only generate pages ≥ 2; page 1 is handled by posts/index.astro
+  return Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => i + 2).map((n) => ({
+    params: { page: String(n) },
+    props: {
+      pageNum: n,
+      totalPages,
+      pagePosts: all.slice((n - 1) * POSTS_PER_PAGE, n * POSTS_PER_PAGE),
+    },
+  }));
+}
+
+interface Props {
+  pageNum: number;
+  totalPages: number;
+  pagePosts: Post[];
+}
+const { pageNum, totalPages, pagePosts } = Astro.props;
+const prevHref = pageNum - 1 <= 1 ? "/posts/" : `/posts/${pageNum - 1}/`;
+const nextHref = `/posts/${pageNum + 1}/`;
+---
+
+<BaseLayout title={`文章 · 第 ${pageNum} 页`} description={`全部文章 · 第 ${pageNum} / ${totalPages} 页`}>
+  <div class="view-pad container">
+    <div class="page-head">
+      <h1>文章 <span class="grad-text">Posts</span></h1>
+      <p>第 {pageNum} / {totalPages} 页</p>
+    </div>
+
+    <div>
+      {pagePosts.map((p) => <PostRow post={p} />)}
+    </div>
+
+    <div class="pagination">
+      <a class="chip" href={prevHref}>
+        <Icon name="left" /> 上一页
+      </a>
+      <span class="page-info">第 {pageNum} / {totalPages} 页</span>
+      {
+        pageNum < totalPages && (
+          <a class="chip" href={nextHref}>
+            下一页 <Icon name="right" />
+          </a>
+        )
+      }
+    </div>
+  </div>
+</BaseLayout>

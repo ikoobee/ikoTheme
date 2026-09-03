@@ -52,19 +52,30 @@ npm run check      # astro check (types + content schema)
 - Two-zone homepage: prioritized main stream + natural-height companion sidebar
 - Light/dark theme: system-aware, remembered, no flash on load
 - Posts + projects as separate, schema-validated content collections
-- Article page: auto TOC, reading time, word count, prev/next, related posts, license block
+- Article page: auto TOC, reading time, word count, prev/next, related posts, license block,
+  opt-in donation dialog (bring your own QR images)
 - Pluggable comments: giscus / Waline / Twikoo adapters — pick one in
   `src/config/site.ts` (`COMMENTS.provider`), lazy-loaded on scroll, dark-mode synced
+  (setup guide: [docs/comments.md](docs/comments.md))
+- Full-site search: Pagefind (`Ctrl/⌘+K` or `/`), built as a post-build step
+- RSS with full-text content, sitemap, SEO meta + default OG image
+- Posts pagination (6 per page) once you have enough content
 - Archive timeline with per-month publishing heatmap (computed from real data)
 - Zero client-side JS by default; styles driven by design tokens
 
 ### Roadmap
 
-- [ ] M2: full visual parity with the approved design prototype
-- [ ] M3: Pagefind full-site search (`Ctrl/⌘+K`), giscus comments, RSS full text,
-      OG image generation, donation dialog (user-supplied QR images)
-- [ ] M4: Lighthouse 4×100, accessibility pass, bilingual README polish, v1.0 release
+- [x] M2: visual parity with the approved design prototype
+- [x] M3: Pagefind search, comment adapters, RSS full text, donation dialog, pagination
+- [ ] M4: Lighthouse 4×100, per-post dynamic OG images, accessibility pass, i18n, v1.0 release
 
 ## License
 
 [MIT](LICENSE) © 2026 Ethan (ikoobee)
+
+## ☕ Sponsor / 赞赏
+
+If this theme helps you ship your blog faster, consider
+[sponsoring the author](https://github.com/sponsors/ikoobee) ☕
+
+简体中文用户可查看 [README.zh-CN.md](README.zh-CN.md#-sponsor--赞赏) 的赞赏码。

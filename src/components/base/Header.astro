@@ -22,6 +22,9 @@ const segment = Astro.url.pathname.split("/").filter(Boolean)[0] ?? "home";
       }
     </div>
     <div class="nav-actions">
+      <button class="icon-btn" id="searchBtn" title="搜索 (Ctrl+K)" aria-label="站内搜索">
+        <Icon name="search" />
+      </button>
       <button class="icon-btn" id="themeBtn" title="切换明暗主题 (T)" aria-label="切换主题">
         <Icon name="moon" class="when-light" />
         <Icon name="sun" class="when-dark" />

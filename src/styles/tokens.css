@@ -9,7 +9,8 @@
   --card-soft: #f8fafd;
   --text: #1f2430;
   --text-2: #5b6472;
-  --text-3: #98a1b0;
+  /* tertiary text darkened for WCAG AA contrast on small meta text */
+  --text-3: #6e7787;
   --border: #e6eaf2;
   --border-2: #d8deea;
   --brand: #6366f1;
@@ -33,7 +34,8 @@
   --card-soft: #182136;
   --text: #e7ecf5;
   --text-2: #9aa6bd;
-  --text-3: #67718a;
+  /* tertiary text lightened for WCAG AA contrast on dark background */
+  --text-3: #7e88a2;
   --border: #232c44;
   --border-2: #2c3757;
   --brand: #818cf8;

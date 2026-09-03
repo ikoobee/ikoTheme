@@ -15,9 +15,9 @@ timeline, and reading enhancements — all static, all fast.
 
 ## Status
 
-🚧 **Under active development** (M1 milestone). Core layout, content
-collections, and theming are landing; see the
-[roadmap](#roadmap) for what ships next.
+🚧 **Feature-complete, pre-v1.0** — M1–M4 landed (layout, collections, search,
+comments, RSS, per-post OG images, a11y pass, Lighthouse CI gate). See the
+[roadmap](#roadmap) for what's next.
 
 ## Quick Start
 
@@ -67,7 +67,10 @@ npm run check      # astro check (types + content schema)
 
 - [x] M2: visual parity with the approved design prototype
 - [x] M3: Pagefind search, comment adapters, RSS full text, donation dialog, pagination
-- [ ] M4: Lighthouse 4×100, per-post dynamic OG images, accessibility pass, i18n, v1.0 release
+- [x] M4: per-post OG images (build-time, sharp), accessibility pass (landmarks, skip link,
+      AA contrast tokens), Lighthouse CI gate (4 categories ≥ 90)
+- [ ] v1.0 release + template repo (`npm create astro@latest -- --template ikoobee/ikoTheme`)
+- [ ] v1.1: i18n (zh/en), recent-searches, optional image lightbox
 
 ## License
 

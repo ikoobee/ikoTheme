@@ -9,12 +9,14 @@ import { SITE } from "../config/site";
 interface Props {
   title?: string;
   description?: string;
+  /** per-page OG image path (defaults to /og-default.png) */
+  image?: string;
 }
-const { title, description = SITE.description } = Astro.props;
+const { title, description = SITE.description, image } = Astro.props;
 const site = Astro.site ?? new URL(SITE.domain);
 const pageTitle = title ? `${title} · ${SITE.titleSuffix}` : SITE.titleSuffix;
 const canonical = new URL(Astro.url.pathname, site);
-const ogImage = new URL("og-default.png", site);
+const ogImage = new URL(image ?? "og-default.png", site);
 ---
 
 <!doctype html>
@@ -55,10 +57,11 @@ const ogImage = new URL("og-default.png", site);
     </script>
   </head>
   <body>
+    <a class="skip-link" href="#main">跳到内容</a>
     <Header />
-    <div data-pagefind-body>
+    <main id="main" data-pagefind-body>
       <slot />
-    </div>
+    </main>
     <Footer />
     <SearchModal />
     <button id="backTop" title="回到顶部" aria-label="回到顶部">

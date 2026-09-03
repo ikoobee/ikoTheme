@@ -32,6 +32,9 @@ a { color: inherit; text-decoration: none; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
 ::selection { background: rgba(99, 102, 241, 0.25); }
 :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 4px; }
+/* skip-to-content link (visible on keyboard focus only) */
+.skip-link { position: fixed; top: -48px; left: 16px; z-index: 1300; background: var(--card); border: 1px solid var(--brand); color: var(--brand); padding: 8px 14px; border-radius: 8px; font-size: 13px; transition: top 0.2s; }
+.skip-link:focus { top: 12px; }
 svg.ic { width: 1em; height: 1em; vertical-align: -0.14em; flex: none; }
 
 .container { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
@@ -51,7 +54,7 @@ svg.ic { width: 1em; height: 1em; vertical-align: -0.14em; flex: none; }
 
 .chip { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 4px 11px; border-radius: 999px; background: var(--bg-soft); color: var(--text-2); border: 1px solid var(--border); transition: all 0.2s; }
 .chip:hover { color: var(--brand); border-color: var(--brand); }
-.badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; padding: 2.5px 10px; border-radius: 999px; color: var(--c, var(--brand)); background: color-mix(in srgb, var(--c, var(--brand)) 12%, transparent); border: 1px solid color-mix(in srgb, var(--c, var(--brand)) 30%, transparent); font-weight: 600; }
+.badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; padding: 2.5px 10px; border-radius: 999px; color: color-mix(in srgb, var(--c, var(--brand)) 68%, var(--text)); background: color-mix(in srgb, var(--c, var(--brand)) 12%, transparent); border: 1px solid color-mix(in srgb, var(--c, var(--brand)) 30%, transparent); font-weight: 600; }
 .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 20px; border-radius: 999px; font-size: 14px; font-weight: 600; transition: all 0.2s; }
 .btn-primary { background: var(--grad); color: #fff; box-shadow: 0 6px 16px -6px rgba(99, 102, 241, 0.55); }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 22px -6px rgba(99, 102, 241, 0.6); }
@@ -135,7 +138,7 @@ svg.ic { width: 1em; height: 1em; vertical-align: -0.14em; flex: none; }
 .feat-post .readmore { margin-top: auto; align-self: flex-start; color: var(--brand); font-size: 13.5px; font-weight: 600; }
 .feat-post .readmore:hover { text-decoration: underline; }
 .meta-line { display: flex; gap: 10px; font-size: 12.5px; color: var(--text-3); flex-wrap: wrap; }
-.meta-line .cat { color: var(--c); font-weight: 700; }
+.meta-line .cat { color: color-mix(in srgb, var(--c) 68%, var(--text)); font-weight: 700; }
 .tags-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: var(--text-3); }
 .tags-line span, .tags-line button { margin-right: 12px; }
 
@@ -277,7 +280,7 @@ svg.ic { width: 1em; height: 1em; vertical-align: -0.14em; flex: none; }
 .article-head h1 { font-size: 28px; line-height: 1.4; font-weight: 800; }
 .article-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; font-size: 13px; color: var(--text-3); margin: 14px 0 22px; }
 .article-meta span { display: inline-flex; align-items: center; gap: 5px; }
-.article-meta .cat { color: var(--c); font-weight: 700; }
+.article-meta .cat { color: color-mix(in srgb, var(--c) 68%, var(--text)); font-weight: 700; }
 .article-cover { height: 220px; border-radius: var(--radius); display: grid; place-items: center; font-size: 56px; font-weight: 800; color: rgba(255, 255, 255, 0.92); margin-bottom: 30px; position: relative; overflow: hidden; }
 
 .prose { font-size: 15.5px; }

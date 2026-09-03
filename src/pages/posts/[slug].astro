@@ -37,7 +37,7 @@ const related = relatedOf(post, await postsByDate());
 const cover = coverVisual(post.id);
 ---
 
-<BaseLayout title={post.data.title} description={post.data.desc}>
+<BaseLayout title={post.data.title} description={post.data.desc} image={`/og/${post.id}.png`}>
   <div class="view-pad container">
     <div id="readProgress"></div>
     <div class="article-layout">

@@ -62,6 +62,39 @@ export const NAV: NavItem[] = [
 export const CATEGORIES = ["Code", "Tutorial", "Essay", "Daily"] as const;
 export type Category = (typeof CATEGORIES)[number];
 
+/**
+ * Comment system — all three adapters are built in; pick ONE active provider.
+ * Dormant adapters cost nothing client-side (they are never rendered).
+ * All adapters lazy-load when scrolled into view.
+ */
+export type CommentsProvider = "giscus" | "waline" | "twikoo" | "none";
+
+export interface CommentsConfig {
+  provider: CommentsProvider;
+  /** giscus: powered by GitHub Discussions — get repoId/categoryId at https://giscus.app */
+  giscus: { repo: string; repoId: string; category: string; categoryId: string };
+  /** waline: self-hosted serverless — https://waline.js.org */
+  waline: { serverURL: string };
+  /** twikoo: self-hosted serverless — https://twikoo.js.org */
+  twikoo: { envId: string };
+}
+
+export const COMMENTS: CommentsConfig = {
+  provider: "none", // switch to "giscus" | "waline" | "twikoo" to enable
+  giscus: {
+    repo: "ikoobee/ikoTheme", // TODO: your public repo with Discussions enabled
+    repoId: "", // TODO: fill from giscus.app
+    category: "Announcements",
+    categoryId: "", // TODO: fill from giscus.app
+  },
+  waline: {
+    serverURL: "", // TODO: e.g. https://waline.example.com
+  },
+  twikoo: {
+    envId: "", // TODO: your twikoo deployment url
+  },
+};
+
 /** zh-CN labels for project statuses */
 export const STATUS_LABEL: Record<string, string> = {
   wip: "进行中",

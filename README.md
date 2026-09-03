@@ -53,6 +53,8 @@ npm run check      # astro check (types + content schema)
 - Light/dark theme: system-aware, remembered, no flash on load
 - Posts + projects as separate, schema-validated content collections
 - Article page: auto TOC, reading time, word count, prev/next, related posts, license block
+- Pluggable comments: giscus / Waline / Twikoo adapters — pick one in
+  `src/config/site.ts` (`COMMENTS.provider`), lazy-loaded on scroll, dark-mode synced
 - Archive timeline with per-month publishing heatmap (computed from real data)
 - Zero client-side JS by default; styles driven by design tokens
 

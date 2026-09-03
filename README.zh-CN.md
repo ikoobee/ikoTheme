@@ -35,7 +35,9 @@ npm run dev        # http://localhost:4321
 | `friends` | `src/content/friends/*.md` | 友链（`/links`） |
 
 站点身份（名称、作者、导航、签名档……）统一在
-[`src/config/site.ts`](src/config/site.ts) 一处配置。
+[`src/config/site.ts`](src/config/site.ts) 一处配置；评论系统同样在此切换：
+内置 **giscus / Waline / Twikoo** 三种适配器，`COMMENTS.provider` 三选一开启，
+未启用的适配器不进入客户端产物，全部懒加载。
 
 ```bash
 npm run build      # 产物输出 dist/

@@ -1,0 +1,42 @@
+---
+/**
+ * Comment dispatcher — renders exactly ONE provider (config-driven).
+ * Dormant adapters are never rendered, so they add zero client cost.
+ */
+import { COMMENTS } from "../../config/site";
+import Giscus from "./Giscus.astro";
+import Waline from "./Waline.astro";
+import Twikoo from "./Twikoo.astro";
+
+const cfg = COMMENTS;
+const ready =
+  (cfg.provider === "giscus" && !!cfg.giscus.repoId && !!cfg.giscus.categoryId) ||
+  (cfg.provider === "waline" && !!cfg.waline.serverURL) ||
+  (cfg.provider === "twikoo" && !!cfg.twikoo.envId);
+---
+
+{
+  cfg.provider !== "none" && (
+    <section class="comments" aria-label="评论区">
+      {ready ? (
+        <>
+          {cfg.provider === "giscus" && (
+            <Giscus
+              repo={cfg.giscus.repo}
+              repoId={cfg.giscus.repoId}
+              category={cfg.giscus.category}
+              categoryId={cfg.giscus.categoryId}
+            />
+          )}
+          {cfg.provider === "waline" && <Waline serverURL={cfg.waline.serverURL} />}
+          {cfg.provider === "twikoo" && <Twikoo envId={cfg.twikoo.envId} />}
+        </>
+      ) : (
+        <div class="comments-hint">
+          评论区未启用：provider 为「{cfg.provider}」，但对应配置不完整——请在
+          src/config/site.ts 的 COMMENTS 段补全后重启 dev。
+        </div>
+      )}
+    </section>
+  )
+}

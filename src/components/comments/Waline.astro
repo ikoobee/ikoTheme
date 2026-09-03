@@ -1,0 +1,53 @@
+---
+/**
+ * Waline adapter — self-hosted serverless backend required.
+ * Lazy-loads on scroll; dark mode follows html[data-theme="dark"].
+ */
+interface Props {
+  serverURL: string;
+}
+const { serverURL } = Astro.props;
+---
+
+<div class="comments-box" id="waline-mount" data-server-url={serverURL}>
+  <div class="comments-loading">评论区加载中…</div>
+</div>
+
+<script>
+  const mount = document.getElementById("waline-mount");
+  if (mount) {
+    const load = () => {
+      if (mount.dataset.loaded) return;
+      mount.dataset.loaded = "1";
+      const css = document.createElement("link");
+      css.rel = "stylesheet";
+      css.href = "https://unpkg.com/@waline/client@v3/dist/waline.css";
+      document.head.appendChild(css);
+      const s = document.createElement("script");
+      s.src = "https://unpkg.com/@waline/client@v3/dist/waline.js";
+      s.async = true;
+      s.onload = () => {
+        const Waline = (
+          window as unknown as {
+            Waline?: { init: (opts: Record<string, unknown>) => unknown };
+          }
+        ).Waline;
+        Waline?.init({
+          el: mount,
+          serverURL: mount.dataset.serverUrl,
+          lang: "zh-CN",
+          dark: "html[data-theme='dark']",
+          pageview: false,
+        });
+        mount.querySelector(".comments-loading")?.remove();
+      };
+      document.body.appendChild(s);
+    };
+    new IntersectionObserver((entries, io) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        io.disconnect();
+        load();
+      }
+    }).observe(mount);
+  }
+</script>

@@ -1,0 +1,43 @@
+---
+/**
+ * Twikoo adapter — self-hosted serverless backend required.
+ * Lazy-loads on scroll. Dark mode follows the page via CSS variables.
+ */
+interface Props {
+  envId: string;
+}
+const { envId } = Astro.props;
+---
+
+<div class="comments-box" id="twikoo-mount" data-env-id={envId}>
+  <div class="comments-loading">评论区加载中…</div>
+</div>
+
+<script>
+  const mount = document.getElementById("twikoo-mount");
+  if (mount) {
+    const load = () => {
+      if (mount.dataset.loaded) return;
+      mount.dataset.loaded = "1";
+      const s = document.createElement("script");
+      s.src = "https://cdn.jsdelivr.net/npm/twikoo@1/dist/twikoo.all.min.js";
+      s.async = true;
+      s.onload = () => {
+        const twikoo = (
+          window as unknown as {
+            twikoo?: { init: (opts: Record<string, unknown>) => Promise<void> | void };
+          }
+        ).twikoo;
+        void twikoo?.init({ el: mount, envId: mount.dataset.envId });
+        mount.querySelector(".comments-loading")?.remove();
+      };
+      document.body.appendChild(s);
+    };
+    new IntersectionObserver((entries, io) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        io.disconnect();
+        load();
+      }
+    }).observe(mount);
+  }
+</script>

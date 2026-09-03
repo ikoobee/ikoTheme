@@ -292,6 +292,12 @@ svg.ic { width: 1em; height: 1em; vertical-align: -0.14em; flex: none; }
 [data-theme="dark"] .astro-code span { color: var(--shiki-dark) !important; background-color: var(--shiki-dark-bg) !important; }
 [data-theme="dark"] .astro-code { border-color: #1f2942; }
 
+/* comments (lazy-loaded islands, one provider active) */
+.comments { margin-top: 30px; }
+.comments-box { padding: 6px 4px 16px; border-top: 1px dashed var(--border-2); }
+.comments-loading { padding: 34px 0; text-align: center; color: var(--text-3); font-size: 13px; }
+.comments-hint { padding: 20px; margin-top: 24px; border: 1px dashed var(--border-2); border-radius: var(--radius); background: var(--card-soft); font-size: 13px; color: var(--text-3); text-align: center; }
+
 /* article tail: license / related / prev-next */
 .article-tail { margin-top: 36px; padding-top: 20px; border-top: 1px dashed var(--border-2); }
 .article-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }

@@ -2,6 +2,7 @@
 import { render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Icon from "../../components/base/Icon.astro";
+import Comments from "../../components/comments/Comments.astro";
 import { SITE } from "../../config/site";
 import {
   postsByDate,
@@ -119,6 +120,7 @@ const cover = coverVisual(post.id);
             }
           </div>
         </div>
+        <Comments />
       </article>
 
       {

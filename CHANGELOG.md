@@ -27,3 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Posts pagination (`/posts/2/`+, 6 per page) with shared PostRow component
 - Repo: bilingual Sponsor sections (EN → GitHub Sponsors link, zh → folded QR images
   from the sponsor-assets masters), FUNDING.yml pointing to ikoobee.com/sponsor
+- M4 polish: per-post OG images rendered at build time (`/og/<slug>.png`, sharp,
+  deterministic on CI via fonts-noto-cjk); accessibility pass (`<main>` landmark,
+  skip-to-content link, search input aria-label, AA-contrast tertiary text and
+  category/badge text via color-mix darkening); Lighthouse CI gate (4 categories
+  ≥ 90) in a dedicated workflow job

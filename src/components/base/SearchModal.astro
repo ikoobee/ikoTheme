@@ -26,6 +26,7 @@ import { NAV } from "../../config/site";
 </div>
 
 <script
+  is:inline
   type="application/json"
   id="quickNav"
   set:html={JSON.stringify([{ url: "/", title: "首页" }, ...NAV.map((n) => ({ url: n.href, title: n.label }))])}

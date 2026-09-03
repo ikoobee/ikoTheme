@@ -63,7 +63,13 @@ export const GET: APIRoute = async ({ params }) => {
   const [c1, c2] = [hexes[0] ?? "#6366f1", hexes[1] ?? "#22d3ee"];
 
   const lines = wrapTitle(title, 17);
-  const titleY = lines.length === 1 ? 330 : [290, 372];
+  const ys: number[] = lines.length === 1 ? [330] : [290, 372];
+  const titleText = ys
+    .map(
+      (y, i) =>
+        `<text x="84" y="${y}" font-family="${FONT}" font-size="56" font-weight="bold" fill="#ffffff">${esc(lines[i])}</text>`,
+    )
+    .join("\n  ");
 
   const svg = `<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -76,15 +82,12 @@ export const GET: APIRoute = async ({ params }) => {
   <circle cx="1060" cy="120" r="160" fill="#ffffff" opacity="0.08"/>
   <circle cx="150" cy="570" r="200" fill="#ffffff" opacity="0.06"/>
   <text x="84" y="112" font-family="${FONT}" font-size="30" fill="#ffffff" opacity="0.85">ikoTheme · ${esc(SITE.name)}</text>
-  ${
-    lines.length === 1
-      ? `<text x="84" y="${titleY}" font-family="${FONT}" font-size="56" font-weight="bold" fill="#ffffff">${esc(lines[0])}</text>`
-      : `<text x="84" y="${titleY[0]}" font-family="${FONT}" font-size="56" font-weight="bold" fill="#ffffff">${esc(lines[0])}</text>
-  <text x="84" y="${titleY[1]}" font-family="${FONT}" font-size="56" font-weight="bold" fill="#ffffff">${esc(lines[1])}</text>`
-  }
+  ${titleText}
   <text x="84" y="560" font-family="${FONT}" font-size="26" fill="#ffffff" opacity="0.78">${esc(meta)}</text>
 </svg>`;
 
   const png = await sharp(Buffer.from(svg)).png().toBuffer();
-  return new Response(png, { headers: { "Content-Type": "image/png" } });
+  return new Response(new Uint8Array(png), {
+    headers: { "Content-Type": "image/png" },
+  });
 };

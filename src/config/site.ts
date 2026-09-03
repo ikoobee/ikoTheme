@@ -33,7 +33,7 @@ export const SITE = {
   heroBadges: ["🛠 独立开发者", "📝 技术写作者", "🌏 开源爱好者"],
   announcement: {
     enabled: true,
-    text: "ikoTheme M4 打磨完成：每篇文章自动生成分享图、无障碍与 Lighthouse 门禁就绪 🎉",
+    text: "ikoTheme v1.0 正式发布：文章/项目双一等公民的 Astro 主题 🎉",
     link: "/posts/iko-theme-log-0/",
   },
   copyright: `© ${new Date().getFullYear()} Ethan (ikoobee)`,

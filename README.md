@@ -15,8 +15,8 @@ timeline, and reading enhancements — all static, all fast.
 
 ## Status
 
-🚧 **Feature-complete, pre-v1.0** — M1–M4 landed (layout, collections, search,
-comments, RSS, per-post OG images, a11y pass, Lighthouse CI gate). See the
+✅ **v1.0 released** — M1–M4 landed (layout, collections, search, comments,
+RSS, per-post OG images, a11y pass, Lighthouse CI gate). See the
 [roadmap](#roadmap) for what's next.
 
 ## Quick Start
@@ -24,8 +24,9 @@ comments, RSS, per-post OG images, a11y pass, Lighthouse CI gate). See the
 Requirements: Node.js 20+ (22 recommended).
 
 ```bash
-# from a clone of this repo (template usage once v1.0 is published:
-#   npm create astro@latest -- --template ikoobee/ikoTheme)
+# from a template:
+npm create astro@latest -- --template ikoobee/ikoTheme
+# or from a clone of this repo:
 npm install
 npm run dev        # http://localhost:4321
 ```
@@ -69,7 +70,7 @@ npm run check      # astro check (types + content schema)
 - [x] M3: Pagefind search, comment adapters, RSS full text, donation dialog, pagination
 - [x] M4: per-post OG images (build-time, sharp), accessibility pass (landmarks, skip link,
       AA contrast tokens), Lighthouse CI gate (4 categories ≥ 90)
-- [ ] v1.0 release + template repo (`npm create astro@latest -- --template ikoobee/ikoTheme`)
+- [x] v1.0 release + template usage (`npm create astro@latest -- --template ikoobee/ikoTheme`)
 - [ ] v1.1: i18n (zh/en), recent-searches, optional image lightbox
 
 ## License

@@ -43,7 +43,7 @@ const rest = projects.filter((p) => !p.data.featured);
               <article class="card proj-fcard reveal" data-status={pr.data.status}>
                 <div class="top">
                   <div class="logo" style={`background:${logo.g}`}>{logo.glyph}</div>
-                  <div>
+                  <div style="min-width:0">
                     <h3>
                       {pr.data.name}
                       <span class={`badge st-${pr.data.status}`}>
@@ -52,12 +52,12 @@ const rest = projects.filter((p) => !p.data.featured);
                     </h3>
                     <div class="mini-stats" style="margin-top:6px">
                       {pr.data.repo && (
-                        <a href={pr.data.repo} target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px">
+                        <a href={pr.data.repo} target="_blank" rel="noopener">
                           <Icon name="github" /> 源码仓库
                         </a>
                       )}
                       {pr.data.demo && (
-                        <a href={pr.data.demo} target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px">
+                        <a href={pr.data.demo} target="_blank" rel="noopener">
                           <Icon name="link" /> 在线体验
                         </a>
                       )}
@@ -67,12 +67,8 @@ const rest = projects.filter((p) => !p.data.featured);
                 </div>
                 <p class="desc">{pr.data.desc}</p>
                 <div class="foot">
-                  <div class="proj-card tech" style="display:flex;flex-wrap:wrap;gap:6px">
-                    {pr.data.tech.map((t) => (
-                      <span style="font-size:11px;padding:2px 9px;border-radius:6px;background:var(--bg-soft);color:var(--text-3);border:1px solid var(--border)">
-                        {t}
-                      </span>
-                    ))}
+                  <div class="tech-chips">
+                    {pr.data.tech.map((t) => <span>{t}</span>)}
                   </div>
                 </div>
               </article>

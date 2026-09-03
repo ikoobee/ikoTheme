@@ -15,3 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   theme toggle without FOUC), pages for home / posts / post detail / projects / archive /
   moments / links / about / 404, reading enhancements (TOC, reading time, prev/next,
   related posts, license block), archive publishing heatmap
+- M2 polish: hero canvas particles (reduced-motion aware), oversized cover watermarks,
+  article reading progress bar, copy button on shiki code blocks, projects status filter,
+  posts category/tag filtering with shareable hash state (`#cat=` / `#tag=`)

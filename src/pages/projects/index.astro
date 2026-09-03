@@ -45,7 +45,7 @@ const rest = projects.filter((p) => !p.data.featured);
                   <div class="logo" style={`background:${logo.g}`}>{logo.glyph}</div>
                   <div style="min-width:0">
                     <h3>
-                      {pr.data.name}
+                      <span class="pname">{pr.data.name}</span>
                       <span class={`badge st-${pr.data.status}`}>
                         {STATUS_LABEL[pr.data.status]}
                       </span>
@@ -53,7 +53,7 @@ const rest = projects.filter((p) => !p.data.featured);
                     <div class="mini-stats" style="margin-top:6px">
                       {pr.data.repo && (
                         <a href={pr.data.repo} target="_blank" rel="noopener">
-                          <Icon name="github" /> 源码仓库
+                          <Icon name="github" /> 仓库
                         </a>
                       )}
                       {pr.data.demo && (

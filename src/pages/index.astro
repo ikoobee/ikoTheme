@@ -128,7 +128,7 @@ const pinnedCover = pinned ? coverVisual(pinned.id) : null;
                   <div class="logo" style={`background:${logo.g}`}>{logo.glyph}</div>
                   <div style="min-width:0">
                     <h3>
-                      {pr.data.name}
+                      <span class="pname">{pr.data.name}</span>
                       <span class={`badge st-${pr.data.status}`}>
                         {STATUS_LABEL[pr.data.status]}
                       </span>

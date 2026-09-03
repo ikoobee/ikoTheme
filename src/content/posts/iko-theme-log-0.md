@@ -1,5 +1,5 @@
 ---
-title: ikoTheme 开发日志 #0：为什么我要自己写一套 Astro 主题
+title: "ikoTheme 开发日志 #0：为什么我要自己写一套 Astro 主题"
 desc: 从 vhAstro 二开到自己造轮子：聊聊我对个人博客的完整想象，以及这套主题到底要解决什么问题。
 date: 2026-09-02
 category: Code

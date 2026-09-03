@@ -31,3 +31,6 @@ Design prototype & full tech spec: `d:\Workspace\design-lab\ikoTheme\`（定稿�
 - M3 前（搜索/评论/赞赏/RSS 全文）不要在 README 正文宣称这些功能已实现。
 - friends 用 `.md`（frontmatter-only）而非 JSON 集合——与开发文档 §6 的细微偏差，
   为降低 loader 风险，后续如改 JSON 同步更新文档。
+- **frontmatter 标题必须加引号**：未加引号的 YAML 值里 ` #`（空格+井号）会被当作
+  注释起点，标题从 ` #` 处静默截断（M4 曾导致 OG 图/页面标题只显示半截）。含
+  `#`、`：`、引号等特殊字符的 frontmatter 值一律双引号包裹。

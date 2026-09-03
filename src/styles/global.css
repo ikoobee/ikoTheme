@@ -151,6 +151,9 @@ svg.ic { width: 1em; height: 1em; vertical-align: -0.14em; flex: none; }
 .proj-hl p { font-size: 13px; color: var(--text-2); margin: 6px 0 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .mini-stats { display: flex; gap: 14px; font-size: 12.5px; color: var(--text-3); flex-wrap: wrap; }
 .mini-stats span { display: inline-flex; align-items: center; gap: 4px; }
+/* icon+text pairs: consistent alignment everywhere */
+.meta-line > span { display: inline-flex; align-items: center; gap: 4px; }
+.proj-card .foot > span:not(.spacer) { display: inline-flex; align-items: center; gap: 4px; }
 
 /* profile card */
 .profile { text-align: center; padding: 18px 18px 14px; position: relative; }

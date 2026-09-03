@@ -15,7 +15,7 @@ const p = project.data;
   <div class="top">
     <div class="logo" style={`background:${logo.g}`}>{logo.glyph}</div>
     <h3>
-      <span class="pname">{p.name}</span>
+      <span class="pname" title={p.name}>{p.name}</span>
       <span class={`badge st-${p.status}`}>{STATUS_LABEL[p.status]}</span>
     </h3>
   </div>

@@ -109,8 +109,8 @@ const pinnedCover = pinned ? coverVisual(pinned.id) : null;
                     <Icon name="clock" /> {readingTime(pinned)} min
                   </span>
                 </div>
-                <h3><a href={`/posts/${pinned.id}/`}>{pinned.data.title}</a></h3>
-                <p style="font-size:13.5px;color:var(--text-2)">{pinned.data.desc}</p>
+                <h3><a href={`/posts/${pinned.id}/`} title={pinned.data.title}>{pinned.data.title}</a></h3>
+                <p class="f-desc">{pinned.data.desc}</p>
                 <div class="tags-line">
                   {pinned.data.tags.map((t) => <span># {t}</span>)}
                 </div>
@@ -128,7 +128,7 @@ const pinnedCover = pinned ? coverVisual(pinned.id) : null;
                   <div class="logo" style={`background:${logo.g}`}>{logo.glyph}</div>
                   <div style="min-width:0">
                     <h3>
-                      <span class="pname">{pr.data.name}</span>
+                      <span class="pname" title={pr.data.name}>{pr.data.name}</span>
                       <span class={`badge st-${pr.data.status}`}>
                         {STATUS_LABEL[pr.data.status]}
                       </span>

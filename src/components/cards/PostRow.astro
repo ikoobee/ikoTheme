@@ -30,7 +30,7 @@ const cover = coverVisual(post.id);
       <span>{fmtDate(post.data.date)}</span>
       <span><Icon name="clock" /> {readingTime(post)} min</span>
     </div>
-    <h3><a href={`/posts/${post.id}/`}>{post.data.title}</a></h3>
+    <h3><a href={`/posts/${post.id}/`} title={post.data.title}>{post.data.title}</a></h3>
     <p class="desc">{post.data.desc}</p>
     <div class="tags-line">
       {post.data.tags.map((t) => (

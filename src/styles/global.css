@@ -131,6 +131,7 @@ svg.ic { width: 1em; height: 1em; vertical-align: -0.14em; flex: none; }
 .feat-post .fc { position: relative; min-height: 200px; display: grid; place-items: center; font-size: 44px; font-weight: 800; color: rgba(255, 255, 255, 0.92); }
 .feat-post .fb { padding: 20px 24px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .feat-post h3 { font-size: 19px; line-height: 1.45; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.feat-post .f-desc { font-size: 13.5px; color: var(--text-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.6; min-height: 3.2em; }
 .feat-post .readmore { margin-top: auto; align-self: flex-start; color: var(--brand); font-size: 13.5px; font-weight: 600; }
 .feat-post .readmore:hover { text-decoration: underline; }
 .meta-line { display: flex; gap: 10px; font-size: 12.5px; color: var(--text-3); flex-wrap: wrap; }
@@ -143,13 +144,13 @@ svg.ic { width: 1em; height: 1em; vertical-align: -0.14em; flex: none; }
 .post-card .ribbon { position: absolute; top: 12px; left: -34px; transform: rotate(-35deg); background: rgba(17, 24, 39, 0.78); color: #fff; font-size: 11px; padding: 3px 40px; letter-spacing: 2px; }
 .post-card .body { padding: 16px 18px 15px; }
 .post-card h3 { font-size: 16.5px; margin: 8px 0 6px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
-.post-card .desc { font-size: 13px; color: var(--text-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.post-card .desc { font-size: 13px; color: var(--text-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.6; min-height: 3.2em; }
 
 /* project highlight (home) */
 .proj-hl { padding: 20px; display: flex; gap: 16px; align-items: flex-start; }
 .proj-hl .logo { width: 58px; height: 58px; border-radius: 16px; display: grid; place-items: center; font-size: 24px; font-weight: 800; color: rgba(255, 255, 255, 0.92); flex: none; }
 .proj-hl h3 { font-size: 16.5px; display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; }
-.proj-hl p { font-size: 13px; color: var(--text-2); margin: 6px 0 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.proj-hl p { font-size: 13px; color: var(--text-2); margin: 6px 0 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.6; min-height: 3.2em; }
 .mini-stats { display: flex; gap: 14px; font-size: 12.5px; color: var(--text-3); flex-wrap: wrap; }
 .mini-stats span { display: inline-flex; align-items: center; gap: 4px; }
 /* icon+text pairs: consistent alignment everywhere */
@@ -217,7 +218,7 @@ svg.ic { width: 1em; height: 1em; vertical-align: -0.14em; flex: none; }
 .proj-fcard .top { display: flex; gap: 16px; align-items: center; }
 .proj-fcard .logo { width: 64px; height: 64px; border-radius: 18px; display: grid; place-items: center; font-size: 26px; font-weight: 800; color: rgba(255, 255, 255, 0.92); flex: none; box-shadow: var(--shadow); }
 .proj-fcard h3 { font-size: 18px; display: flex; align-items: center; gap: 10px; flex-wrap: nowrap; }
-.proj-fcard .desc { font-size: 14px; color: var(--text-2); }
+.proj-fcard .desc { font-size: 14px; color: var(--text-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.6; min-height: 3.2em; }
 .proj-fcard .foot { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: auto; }
 .proj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .proj-card { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
@@ -227,7 +228,7 @@ svg.ic { width: 1em; height: 1em; vertical-align: -0.14em; flex: none; }
 
 /* project name: single line with ellipsis (badge stays beside it) */
 .pname { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.proj-card .desc { font-size: 13px; color: var(--text-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.proj-card .desc { font-size: 13px; color: var(--text-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.6; min-height: 3.2em; }
 /* tech chips — shared by featured & grid project cards (single row) */
 .tech-chips { display: flex; flex-wrap: nowrap; gap: 6px; overflow: hidden; }
 .tech-chips span { font-size: 11px; padding: 2px 9px; border-radius: 6px; background: var(--bg-soft); color: var(--text-3); border: 1px solid var(--border); flex: none; }
@@ -245,7 +246,7 @@ svg.ic { width: 1em; height: 1em; vertical-align: -0.14em; flex: none; }
 .post-row { display: flex; gap: 18px; padding: 18px; margin-bottom: 16px; align-items: stretch; }
 .post-row .thumb { width: 172px; height: 116px; border-radius: 12px; display: grid; place-items: center; font-size: 32px; font-weight: 800; color: rgba(255, 255, 255, 0.92); flex: none; position: relative; overflow: hidden; }
 .post-row h3 { font-size: 16.5px; line-height: 1.45; margin: 6px 0; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
-.post-row .desc { font-size: 13px; color: var(--text-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.post-row .desc { font-size: 13px; color: var(--text-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.6; min-height: 3.2em; }
 .posts-aside { display: flex; flex-direction: column; }
 
 /* ============================================================

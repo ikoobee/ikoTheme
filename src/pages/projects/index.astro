@@ -45,7 +45,7 @@ const rest = projects.filter((p) => !p.data.featured);
                   <div class="logo" style={`background:${logo.g}`}>{logo.glyph}</div>
                   <div style="min-width:0">
                     <h3>
-                      <span class="pname">{pr.data.name}</span>
+                      <span class="pname" title={pr.data.name}>{pr.data.name}</span>
                       <span class={`badge st-${pr.data.status}`}>
                         {STATUS_LABEL[pr.data.status]}
                       </span>

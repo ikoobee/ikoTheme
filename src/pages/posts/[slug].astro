@@ -92,7 +92,7 @@ const cover = coverVisual(post.id);
                   {related.map((r) => (
                     <a class="pn-card" href={`/posts/${r.id}/`}>
                       <small>{fmtDate(r.data.date)} · {r.data.category}</small>
-                      <b>{r.data.title}</b>
+                      <b title={r.data.title}>{r.data.title}</b>
                     </a>
                   ))}
                 </div>
@@ -105,7 +105,7 @@ const cover = coverVisual(post.id);
               prev ? (
                 <a class="pn-card" href={`/posts/${prev.id}/`}>
                   <small><Icon name="left" /> 上一篇（更早）</small>
-                  <b>{prev.data.title}</b>
+                  <b title={prev.data.title}>{prev.data.title}</b>
                 </a>
               ) : (
                 <div class="pn-card" style="opacity:.4">
@@ -118,7 +118,7 @@ const cover = coverVisual(post.id);
               next ? (
                 <a class="pn-card next" href={`/posts/${next.id}/`}>
                   <small>下一篇（更新） <Icon name="right" /></small>
-                  <b>{next.data.title}</b>
+                  <b title={next.data.title}>{next.data.title}</b>
                 </a>
               ) : (
                 <div class="pn-card next" style="opacity:.4">

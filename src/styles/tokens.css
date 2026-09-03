@@ -1,0 +1,60 @@
+/* ============================================================
+   ikoTheme design tokens — single source of visual truth.
+   Ported 1:1 from the approved prototype (design-lab/ikoTheme).
+   ============================================================ */
+:root {
+  --bg: #f4f6fb;
+  --bg-soft: #edf0f8;
+  --card: #ffffff;
+  --card-soft: #f8fafd;
+  --text: #1f2430;
+  --text-2: #5b6472;
+  --text-3: #98a1b0;
+  --border: #e6eaf2;
+  --border-2: #d8deea;
+  --brand: #6366f1;
+  --brand-2: #22d3ee;
+  --brand-soft: rgba(99, 102, 241, 0.1);
+  --grad: linear-gradient(120deg, #6366f1 0%, #22d3ee 100%);
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 8px 24px -12px rgba(16, 24, 40, 0.12);
+  --shadow-lg: 0 24px 48px -24px rgba(16, 24, 40, 0.28);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --nav-h: 64px;
+  --maxw: 1280px;
+  --pattern: rgba(99, 102, 241, 0.055);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #0b0f1a;
+  --bg-soft: #0d1322;
+  --card: #141b2d;
+  --card-soft: #182136;
+  --text: #e7ecf5;
+  --text-2: #9aa6bd;
+  --text-3: #67718a;
+  --border: #232c44;
+  --border-2: #2c3757;
+  --brand: #818cf8;
+  --brand-2: #67e8f9;
+  --brand-soft: rgba(129, 140, 248, 0.14);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 24px 48px -24px rgba(0, 0, 0, 0.65);
+  --pattern: rgba(148, 163, 255, 0.07);
+  color-scheme: dark;
+}
+
+/* Category hues — class sets --c, components derive via color-mix */
+.cat-Code { --c: #f59e0b; }
+.cat-Daily { --c: #14b8a6; }
+.cat-Tutorial { --c: #8b5cf6; }
+.cat-Essay { --c: #f43f5e; }
+
+/* Project status hues */
+.st-wip { --c: #6366f1; }
+.st-stable { --c: #10b981; }
+.st-active { --c: #0ea5e9; }
+.st-beta { --c: #f59e0b; }
+.st-maintenance { --c: #94a3b8; }
+.st-archived { --c: #64748b; }

@@ -1,0 +1,70 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Icon from "../../components/base/Icon.astro";
+import { CATEGORIES } from "../../config/site";
+import { postsByDate, tagMap, readingTime, fmtDate, coverVisual } from "../../utils/content";
+
+const posts = await postsByDate();
+const tm = tagMap(posts);
+const topTags = [...tm.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title="文章" description={`全部文章 · 共 ${posts.length} 篇`}>
+  <div class="view-pad container">
+    <div class="page-head">
+      <h1>文章 <span class="grad-text">Posts</span></h1>
+      <p>共 {posts.length} 篇 · {tm.size} 个标签</p>
+    </div>
+    <div class="posts-layout">
+      <div>
+        {
+          posts.map((p) => {
+            const cover = coverVisual(p.id);
+            return (
+              <article class="card clickable post-row reveal">
+                <a
+                  class="thumb"
+                  style={`background:${cover.g}`}
+                  href={`/posts/${p.id}/`}
+                  aria-label={p.data.title}
+                >
+                  {cover.glyph}
+                </a>
+                <div style="min-width:0;flex:1">
+                  <div class="meta-line">
+                    <span class={`cat cat-${p.data.category}`}>{p.data.category}</span>
+                    <span>{fmtDate(p.data.date)}</span>
+                    <span>
+                      <Icon name="clock" /> {readingTime(p)} min
+                    </span>
+                  </div>
+                  <h3><a href={`/posts/${p.id}/`}>{p.data.title}</a></h3>
+                  <p class="desc">{p.data.desc}</p>
+                  <div class="tags-line">{p.data.tags.map((t) => <span># {t}</span>)}</div>
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+      <div class="posts-aside">
+        <div class="card aside-block reveal">
+          <h4><Icon name="folder" /> 分类</h4>
+          {CATEGORIES.map((c) => (
+            <div class={`cat-row cat-${c}`}>
+              <span class="cdot" />
+              {c}
+              <b>{posts.filter((p) => p.data.category === c).length}</b>
+            </div>
+          ))}
+        </div>
+        <div class="card aside-block reveal">
+          <h4><Icon name="tag" /> 标签</h4>
+          <div class="tag-cloud">
+            {topTags.map(([t, n]) => <span class="chip">{t} {n}</span>)}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

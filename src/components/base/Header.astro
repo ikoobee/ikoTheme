@@ -1,0 +1,48 @@
+---
+import { NAV, SITE } from "../../config/site";
+import Icon from "./Icon.astro";
+
+const segment = Astro.url.pathname.split("/").filter(Boolean)[0] ?? "home";
+---
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="/" aria-label="返回首页">
+      <span class="logo-mark">ik</span>
+      <span>ikoobee<span class="grad-text">.com</span></span>
+    </a>
+    <div class="nav-menu">
+      {
+        NAV.map((n) => (
+          <a href={n.href} class={segment === n.id ? "active" : ""}>
+            <Icon name={n.icon} />
+            {n.label}
+          </a>
+        ))
+      }
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeBtn" title="切换明暗主题 (T)" aria-label="切换主题">
+        <Icon name="moon" class="when-light" />
+        <Icon name="sun" class="when-dark" />
+      </button>
+      <a class="icon-btn" href={SITE.author.github} target="_blank" rel="noopener" title="GitHub" aria-label="GitHub">
+        <Icon name="github" />
+      </a>
+      <button class="icon-btn" id="menuBtn" title="菜单" aria-label="打开菜单">
+        <Icon name="menu" />
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  {
+    NAV.map((n) => (
+      <a href={n.href} class={segment === n.id ? "active" : ""}>
+        <Icon name={n.icon} />
+        {n.label}
+      </a>
+    ))
+  }
+</div>

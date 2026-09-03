@@ -1,0 +1,135 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Icon from "../../components/base/Icon.astro";
+import { SITE } from "../../config/site";
+import {
+  postsByDate,
+  readingTime,
+  wordCount,
+  fmtDate,
+  relatedOf,
+  tocFrom,
+  coverVisual,
+  type Post,
+} from "../../utils/content";
+
+export async function getStaticPaths() {
+  const posts = await postsByDate();
+  return posts.map((p, i) => ({
+    params: { slug: p.id },
+    props: { post: p, prev: posts[i + 1] ?? null, next: posts[i - 1] ?? null },
+  }));
+}
+
+interface Props {
+  post: Post;
+  prev: Post | null;
+  next: Post | null;
+}
+
+const { post, prev, next } = Astro.props;
+const { Content } = await render(post);
+const toc = tocFrom(post.body ?? "");
+const related = relatedOf(post, await postsByDate());
+const cover = coverVisual(post.id);
+---
+
+<BaseLayout title={post.data.title} description={post.data.desc}>
+  <div class="view-pad container">
+    <div class="article-layout">
+      <article>
+        <div class="article-head">
+          <h1>{post.data.title}</h1>
+          <div class="article-meta">
+            <span class={`cat cat-${post.data.category}`}>
+              <Icon name="folder" /> {post.data.category}
+            </span>
+            <span><Icon name="calendar" /> {fmtDate(post.data.date)}</span>
+            <span><Icon name="clock" /> 约 {readingTime(post)} 分钟</span>
+            <span><Icon name="pen" /> {wordCount(post).toLocaleString()} 字</span>
+          </div>
+        </div>
+
+        <div class="article-cover" style={`background:${cover.g}`}>
+          {cover.glyph}
+        </div>
+
+        <div class="prose">
+          <Content />
+        </div>
+
+        <div class="article-tail">
+          <div class="article-tags">
+            {post.data.tags.map((t) => <span class="chip"># {t}</span>)}
+          </div>
+
+          <div class="license">
+            <Icon name="info" />
+            <div>
+              本文作者：<b>{SITE.author.name}</b> · 发布于 {fmtDate(post.data.date)}<br />
+              本文链接：<a href={`${SITE.domain}/posts/${post.id}/`}>{SITE.domain}/posts/{post.id}/</a>
+              · 版权声明：<a href={SITE.license.url} target="_blank" rel="noopener">{SITE.license.name}</a>，转载请注明出处。
+            </div>
+          </div>
+
+          {
+            related.length > 0 && (
+              <div class="related">
+                <h4><Icon name="zap" /> 相关阅读</h4>
+                <div class="related-grid">
+                  {related.map((r) => (
+                    <a class="pn-card" href={`/posts/${r.id}/`}>
+                      <small>{fmtDate(r.data.date)} · {r.data.category}</small>
+                      <b>{r.data.title}</b>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )
+          }
+
+          <div class="prev-next">
+            {
+              prev ? (
+                <a class="pn-card" href={`/posts/${prev.id}/`}>
+                  <small><Icon name="left" /> 上一篇（更早）</small>
+                  <b>{prev.data.title}</b>
+                </a>
+              ) : (
+                <div class="pn-card" style="opacity:.4">
+                  <small>上一篇</small>
+                  <b>已经是最早一篇了</b>
+                </div>
+              )
+            }
+            {
+              next ? (
+                <a class="pn-card next" href={`/posts/${next.id}/`}>
+                  <small>下一篇（更新） <Icon name="right" /></small>
+                  <b>{next.data.title}</b>
+                </a>
+              ) : (
+                <div class="pn-card next" style="opacity:.4">
+                  <small>下一篇</small>
+                  <b>已是最新的了</b>
+                </div>
+              )
+            }
+          </div>
+        </div>
+      </article>
+
+      {
+        toc.length > 0 && (
+          <aside class="card toc">
+            <h5><Icon name="zap" /> 本文目录</h5>
+            {toc.map((t) => (
+              <a href={`#${t.id}`} class={t.depth === 3 ? "sub" : ""}>{t.text}</a>
+            ))}
+          </aside>
+        )
+      }
+    </div>
+  </div>
+</BaseLayout>

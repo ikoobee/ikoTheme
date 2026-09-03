@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE } from "../config/site";
+import { momentsAll, fmtDateTime } from "../utils/content";
+
+const moments = await momentsAll();
+---
+
+<BaseLayout title="动态" description={`动态 · ${moments.length} 条`}>
+  <div class="view-pad container">
+    <div class="page-head">
+      <h1>动态 <span class="grad-text">Moments</span></h1>
+      <p>比文章更轻，比朋友圈更真</p>
+    </div>
+    <div class="moment-feed">
+      {
+        moments.map((m) => (
+          <article class="card moment-card reveal">
+            <div class="mhead">
+              <div class="mava">E</div>
+              <div style="line-height:1.4">
+                <b>{SITE.author.name}</b>
+                <br />
+                <time style="font-size:12px;color:var(--text-3)">{fmtDateTime(m.data.date)}</time>
+              </div>
+            </div>
+            <p class="mtext">{m.data.text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

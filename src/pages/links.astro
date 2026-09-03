@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/base/Icon.astro";
+import { SITE } from "../config/site";
+import { friendsAll, coverVisual } from "../utils/content";
+
+const friends = await friendsAll();
+---
+
+<BaseLayout title="友链" description="互联网上的一些好邻居">
+  <div class="view-pad container">
+    <div class="page-head">
+      <h1>友链 <span class="grad-text">Friends</span></h1>
+      <p>互联网上的一些好邻居</p>
+    </div>
+
+    <div class="links-grid">
+      {
+        friends.map((f) => {
+          const c = coverVisual(f.data.name);
+          return (
+            <a class="card link-card reveal" href={f.data.url} target="_blank" rel="noopener">
+              <span class="fa" style={`background:${c.g}`}>{f.data.name.slice(0, 1)}</span>
+              <div style="min-width:0">
+                <b>{f.data.name}</b>
+                <span>{f.data.desc}</span>
+              </div>
+            </a>
+          );
+        })
+      }
+    </div>
+
+    <div class="card aside-block" style="margin-top:22px">
+      <h4><Icon name="info" /> 申请友链</h4>
+      <p style="font-size:13.5px;color:var(--text-2)">
+        要求：原创内容 ≥ 10 篇、支持 HTTPS、可持续维护。符合条件请邮件联系，标题注明「友链 + 站点名」。
+      </p>
+      <p style="margin-top:10px">
+        <a class="btn btn-ghost" href={`mailto:${SITE.author.email}?subject=%E5%8F%8B%E9%93%BE%E7%94%B3%E8%AF%B7`}>
+          <Icon name="mail" /> {SITE.author.email}
+        </a>
+      </p>
+    </div>
+  </div>
+</BaseLayout>

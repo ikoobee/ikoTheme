@@ -1,0 +1,42 @@
+---
+import Icon from "../base/Icon.astro";
+import { STATUS_LABEL } from "../../config/site";
+import { coverVisual, type Project } from "../../utils/content";
+
+interface Props {
+  project: Project;
+}
+const { project } = Astro.props;
+const logo = coverVisual(project.data.name);
+const p = project.data;
+---
+
+<article class="card proj-card reveal">
+  <div class="top">
+    <div class="logo" style={`background:${logo.g}`}>{logo.glyph}</div>
+    <h3>
+      {p.name}
+      <span class={`badge st-${p.status}`}>{STATUS_LABEL[p.status]}</span>
+    </h3>
+  </div>
+  <p class="desc">{p.desc}</p>
+  <div class="tech">{p.tech.map((t) => <span>{t}</span>)}</div>
+  <div class="foot">
+    <span><Icon name="zap" /> {p.license}</span>
+    <span class="spacer"></span>
+    {
+      p.repo && (
+        <a href={p.repo} target="_blank" rel="noopener">
+          <Icon name="github" /> 仓库
+        </a>
+      )
+    }
+    {
+      p.demo && (
+        <a href={p.demo} target="_blank" rel="noopener">
+          <Icon name="link" /> Demo
+        </a>
+      )
+    }
+  </div>
+</article>

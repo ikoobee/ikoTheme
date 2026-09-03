@@ -1,0 +1,97 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/base/Icon.astro";
+import { SITE, SKILLS, TIMELINE } from "../config/site";
+
+// decorative activity heatmap (placeholder levels, replaced by real data in a later milestone)
+const heat: number[] = [];
+for (let w = 0; w < 26; w++) {
+  for (let d = 0; d < 7; d++) {
+    heat.push(((w * 7 + d) * 2654435761) % 5);
+  }
+}
+---
+
+<BaseLayout title="关于" description={SITE.description}>
+  <div class="view-pad container">
+    <div class="page-head">
+      <h1>关于 <span class="grad-text">About</span></h1>
+      <p>写代码的人，和他的博客</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-side">
+        <div class="card reveal">
+          <div class="p-avatar">E</div>
+          <h3>
+            {SITE.author.name}
+            <span class="handle" style="font-size:12px;color:var(--text-3);font-weight:500">
+              @{SITE.author.handle}
+            </span>
+          </h3>
+          <p class="bio">{SITE.name} 主理人 · 独立开发者<br />把想法一个个做成产品的人</p>
+          <div class="skill-tags">
+            {SKILLS.map((s) => <span class="chip">{s}</span>)}
+          </div>
+          <div class="heatmap" aria-label="GitHub 活跃度示意">
+            {heat.map((lv) => <i class={lv > 0 ? `lv${lv}` : ""} title={`活跃度 ${lv}/4`} />)}
+          </div>
+          <p style="font-size:11px;color:var(--text-3);margin-top:8px">近半年 GitHub 活动（示意数据）</p>
+        </div>
+
+        <div class="card aside-block">
+          <h4><Icon name="zap" /> 本站信息</h4>
+          <div class="cat-row"><span class="cdot" style="--c:#f43f5e" /> 站长<b>{SITE.author.name} (@{SITE.author.handle})</b></div>
+          <div class="cat-row"><span class="cdot" style="--c:var(--brand)" /> 主题<b>ikoTheme</b></div>
+          <div class="cat-row"><span class="cdot" style="--c:#14b8a6" /> 框架<b>Astro 5</b></div>
+          <div class="cat-row"><span class="cdot" style="--c:#f59e0b" /> 协议<b>{SITE.license.name}（文章）</b></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card about-block reveal">
+          <div class="section-title"><Icon name="user" /> 我是谁</div>
+          <p style="font-size:14.5px;color:var(--text-2)">
+            白天写业务代码，晚上写自己想写的东西。相信小而美的工具能改变一小部分人的日常，也相信把学习过程公开记录是最有效的复习。
+          </p>
+          <p style="font-size:14.5px;color:var(--text-2);margin-top:10px">
+            这个博客记录三件事：<b>造轮子的过程</b>（项目集）、<b>踩过的坑</b>（技术文）、和<b>代码之外的生活</b>（随笔与动态）。
+          </p>
+        </div>
+
+        <div class="card about-block reveal">
+          <div class="section-title"><Icon name="clock" /> 时间线</div>
+          <div class="timeline">
+            {
+              TIMELINE.map((t) => (
+                <div class="tl-item">
+                  <time>{t.year}</time>
+                  <b>{t.title}</b>
+                  <p>{t.desc}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="card about-block reveal" style="margin-bottom:0">
+          <div class="section-title"><Icon name="mail" /> 找到我</div>
+          <div class="contact-cards">
+            <a class="card contact-card" style="box-shadow:none" href={SITE.author.github} target="_blank" rel="noopener">
+              <Icon name="github" />
+              <b>GitHub</b>@{SITE.author.handle}
+            </a>
+            <a class="card contact-card" style="box-shadow:none" href={`mailto:${SITE.author.email}`}>
+              <Icon name="mail" />
+              <b>Email</b>{SITE.author.email}
+            </a>
+            <a class="card contact-card" style="box-shadow:none" href="/archive/">
+              <Icon name="archive" />
+              <b>归档</b>全部文章
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

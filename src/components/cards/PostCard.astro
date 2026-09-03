@@ -1,0 +1,26 @@
+---
+import Icon from "../base/Icon.astro";
+import { fmtDate, readingTime, coverVisual, type Post } from "../../utils/content";
+
+interface Props {
+  post: Post;
+}
+const { post } = Astro.props;
+const cover = coverVisual(post.id);
+---
+
+<article class="card clickable post-card reveal">
+  <a href={`/posts/${post.id}/`} class="cover" style={`background:${cover.g}`} aria-label={post.data.title}>
+    {cover.glyph}{post.data.pinned && <span class="ribbon">置顶</span>}
+  </a>
+  <div class="body">
+    <div class="meta-line">
+      <span class={`cat cat-${post.data.category}`}>{post.data.category}</span>
+      <span>{fmtDate(post.data.date)}</span>
+      <span><Icon name="clock" /> {readingTime(post)} min</span>
+    </div>
+    <h3><a href={`/posts/${post.id}/`}>{post.data.title}</a></h3>
+    <p class="desc">{post.data.desc}</p>
+    <div class="tags-line">{post.data.tags.map((t) => <span># {t}</span>)}</div>
+  </div>
+</article>

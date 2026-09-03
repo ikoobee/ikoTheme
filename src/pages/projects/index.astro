@@ -1,0 +1,72 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Icon from "../../components/base/Icon.astro";
+import ProjectCard from "../../components/cards/ProjectCard.astro";
+import { STATUS_LABEL } from "../../config/site";
+import { projectsAll, coverVisual } from "../../utils/content";
+
+const projects = await projectsAll();
+const featured = projects.filter((p) => p.data.featured);
+const rest = projects.filter((p) => !p.data.featured);
+---
+
+<BaseLayout title="项目" description={`开源项目集 · 共 ${projects.length} 个`}>
+  <div class="view-pad container">
+    <div class="page-head">
+      <h1>项目集 <span class="grad-text">Projects</span></h1>
+      <p>造过的轮子，踩过的坑，都在这里留档</p>
+    </div>
+
+    {
+      featured.length > 0 && (
+        <div class="proj-featured">
+          {featured.map((pr) => {
+            const logo = coverVisual(pr.data.name);
+            return (
+              <article class="card proj-fcard reveal">
+                <div class="top">
+                  <div class="logo" style={`background:${logo.g}`}>{logo.glyph}</div>
+                  <div>
+                    <h3>
+                      {pr.data.name}
+                      <span class={`badge st-${pr.data.status}`}>
+                        {STATUS_LABEL[pr.data.status]}
+                      </span>
+                    </h3>
+                    <div class="mini-stats" style="margin-top:6px">
+                      {pr.data.repo && (
+                        <a href={pr.data.repo} target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px">
+                          <Icon name="github" /> 源码仓库
+                        </a>
+                      )}
+                      {pr.data.demo && (
+                        <a href={pr.data.demo} target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px">
+                          <Icon name="link" /> 在线体验
+                        </a>
+                      )}
+                      <span><Icon name="zap" /> {pr.data.license}</span>
+                    </div>
+                  </div>
+                </div>
+                <p class="desc">{pr.data.desc}</p>
+                <div class="foot">
+                  <div class="proj-card tech" style="display:flex;flex-wrap:wrap;gap:6px">
+                    {pr.data.tech.map((t) => (
+                      <span style="font-size:11px;padding:2px 9px;border-radius:6px;background:var(--bg-soft);color:var(--text-3);border:1px solid var(--border)">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )
+    }
+
+    <div class="proj-grid">
+      {rest.map((pr) => <ProjectCard project={pr} />)}
+    </div>
+  </div>
+</BaseLayout>

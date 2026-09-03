@@ -1,0 +1,32 @@
+---
+import { SITE, NAV } from "../../config/site";
+import { postsByDate, siteDays } from "../../utils/content";
+
+const posts = await postsByDate();
+const words = posts.reduce((s, p) => s + (p.body ?? "").replace(/\s/g, "").length, 0);
+const days = siteDays();
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h5>{SITE.name}</h5>
+      <p>{SITE.description} 本站由 <b>ikoTheme</b> 驱动（开发中）。</p>
+    </div>
+    <div>
+      <h5>站点</h5>
+      {NAV.map((n) => <a href={n.href}>{n.label}</a>)}
+    </div>
+    <div>
+      <h5>更多</h5>
+      <a href={SITE.author.github} target="_blank" rel="noopener">GitHub</a>
+      <a href={`mailto:${SITE.author.email}`}>Email</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>{SITE.copyright}</span>
+    <span>共 {posts.length} 篇 · 累计 {Math.round(words / 100) / 10}k 字 · 已运行 {days} 天</span>
+    <span>Powered by <b class="grad-text">Astro</b> & <b class="grad-text">ikoTheme</b> · v{year >= 2026 ? "0.1.0" : "0.1.0"}</span>
+  </div>
+</footer>

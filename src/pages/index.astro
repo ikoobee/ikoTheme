@@ -1,0 +1,295 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/base/Icon.astro";
+import PostCard from "../components/cards/PostCard.astro";
+import ProjectCard from "../components/cards/ProjectCard.astro";
+import { SITE, STATUS_LABEL, CATEGORIES } from "../config/site";
+import {
+  postsByDate,
+  projectsAll,
+  momentsAll,
+  friendsAll,
+  tagMap,
+  readingTime,
+  fmtDate,
+  fmtDateTime,
+  siteDays,
+  coverVisual,
+} from "../utils/content";
+
+const posts = await postsByDate();
+const projects = await projectsAll();
+const moments = (await momentsAll()).slice(0, 3);
+const friends = await friendsAll();
+
+const pinned = posts.find((p) => p.data.pinned) ?? posts[0];
+const latest = posts.filter((p) => p !== pinned).slice(0, 4);
+const featProjects = projects.filter((p) => p.data.featured);
+const moreProjects = projects.filter((p) => !p.data.featured).slice(0, 2);
+
+const tm = tagMap(posts);
+const topTags = [...tm.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6);
+const days = siteDays();
+const pinnedCover = pinned ? coverVisual(pinned.id) : null;
+---
+
+<BaseLayout>
+  <header class="hero">
+    <div class="hero-media" aria-hidden="true">
+      <svg viewBox="0 0 1440 460" preserveAspectRatio="xMidYMax slice">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#1e1b4b"></stop>
+            <stop offset=".45" stop-color="#4c3a8f"></stop>
+            <stop offset=".75" stop-color="#b4534b"></stop>
+            <stop offset="1" stop-color="#f59e0b"></stop>
+          </linearGradient>
+        </defs>
+        <rect width="1440" height="460" fill="url(#sky)"></rect>
+        <circle cx="1150" cy="140" r="46" fill="#fde68a" opacity=".9"></circle>
+        <circle cx="1150" cy="140" r="78" fill="#fde68a" opacity=".18"></circle>
+        <g fill="#fff">
+          <circle cx="180" cy="70" r="1.6" opacity=".9"></circle>
+          <circle cx="320" cy="120" r="1.1" opacity=".7"></circle>
+          <circle cx="520" cy="60" r="1.4" opacity=".8"></circle>
+          <circle cx="700" cy="100" r="1" opacity=".6"></circle>
+          <circle cx="860" cy="50" r="1.5" opacity=".85"></circle>
+          <circle cx="1010" cy="90" r="1.1" opacity=".7"></circle>
+          <circle cx="240" cy="160" r="1" opacity=".5"></circle>
+          <circle cx="620" cy="150" r="1.2" opacity=".6"></circle>
+          <circle cx="1330" cy="60" r="1.4" opacity=".8"></circle>
+          <circle cx="90" cy="110" r="1.2" opacity=".7"></circle>
+        </g>
+        <path d="M0 300 L180 190 L340 280 L520 170 L700 290 L860 210 L1040 300 L1200 200 L1440 310 L1440 460 L0 460 Z" fill="#3b3262" opacity=".55"></path>
+        <path d="M0 340 L220 240 L420 330 L640 230 L840 330 L1020 260 L1240 350 L1440 280 L1440 460 L0 460 Z" fill="#2a2450" opacity=".8"></path>
+        <path d="M0 400 L260 300 L500 390 L760 300 L1000 400 L1260 320 L1440 390 L1440 460 L0 460 Z" fill="#141031"></path>
+        <path d="M0 460 L1440 430 L1440 460 Z" fill="#0c0a20"></path>
+      </svg>
+    </div>
+    <div class="hero-veil"></div>
+    <div class="hero-inner">
+      <div class="hero-avatar">E</div>
+      <h1 class="hero-name"><small>{SITE.name}</small>{SITE.author.name}</h1>
+      <p class="hero-typed">
+        <span id="typed" data-lines={JSON.stringify(SITE.taglines)}></span><span class="cursor"></span>
+      </p>
+      <div class="hero-badges">
+        {SITE.heroBadges.map((b) => <span>{b}</span>)}
+      </div>
+    </div>
+  </header>
+
+  <div class="home-layout container">
+    <!-- left: prioritized main stream -->
+    <div class="home-main">
+      <section>
+        <div class="section-title">
+          <Icon name="zap" /> 精选
+          <small><a href="/posts/">全部文章 →</a></small>
+        </div>
+        {
+          pinned && (
+            <article class="card clickable feat-post reveal">
+              <a
+                class="fc"
+                style={`background:${pinnedCover!.g}`}
+                href={`/posts/${pinned.id}/`}
+                aria-label={pinned.data.title}
+              >
+                {pinnedCover!.glyph}
+                {pinned.data.pinned && <span class="ribbon">置顶</span>}
+              </a>
+              <div class="fb">
+                <div class="meta-line">
+                  <span class={`cat cat-${pinned.data.category}`}>{pinned.data.category}</span>
+                  <span>{fmtDate(pinned.data.date)}</span>
+                  <span>
+                    <Icon name="clock" /> {readingTime(pinned)} min
+                  </span>
+                </div>
+                <h3><a href={`/posts/${pinned.id}/`}>{pinned.data.title}</a></h3>
+                <p style="font-size:13.5px;color:var(--text-2)">{pinned.data.desc}</p>
+                <div class="tags-line">
+                  {pinned.data.tags.map((t) => <span># {t}</span>)}
+                </div>
+                <a class="readmore" href={`/posts/${pinned.id}/`}>阅读全文 →</a>
+              </div>
+            </article>
+          )
+        }
+        <div class="home-2col" style="margin-top:20px">
+          {
+            featProjects.map((pr) => {
+              const logo = coverVisual(pr.data.name);
+              return (
+                <article class="card clickable proj-hl reveal">
+                  <div class="logo" style={`background:${logo.g}`}>{logo.glyph}</div>
+                  <div style="min-width:0">
+                    <h3>
+                      {pr.data.name}
+                      <span class={`badge st-${pr.data.status}`}>
+                        {STATUS_LABEL[pr.data.status]}
+                      </span>
+                    </h3>
+                    <p>{pr.data.desc}</p>
+                    <div class="mini-stats">
+                      {
+                        pr.data.repo && (
+                          <a href={pr.data.repo} target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px">
+                            <Icon name="github" /> 仓库
+                          </a>
+                        )
+                      }
+                      <span>
+                        <Icon name="zap" /> {pr.data.license}
+                      </span>
+                    </div>
+                  </div>
+                </article>
+              );
+            })
+          }
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <Icon name="pen" /> 最新文章
+          <small><a href="/posts/">查看全部 →</a></small>
+        </div>
+        <div class="home-2col">
+          {latest.map((p) => <PostCard post={p} />)}
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <Icon name="rocket" /> 开源项目
+          <small><a href="/projects/">全部项目 →</a></small>
+        </div>
+        <div class="home-2col">
+          {moreProjects.map((pr) => <ProjectCard project={pr} />)}
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <Icon name="chat" /> 最新动态
+          <small><a href="/moments/">全部动态 →</a></small>
+        </div>
+        <div class="card reveal">
+          {moments.map((m) => (
+            <div class="moment-item">
+              <time>{fmtDateTime(m.data.date)}</time>
+              {m.data.text}
+            </div>
+          ))}
+          <a class="card-more" href="/moments/">过去的事，都在动态里 →</a>
+        </div>
+      </section>
+    </div>
+
+    <!-- right: companion sidebar -->
+    <aside class="home-side">
+      <div class="card profile reveal">
+        <div class="p-avatar">E</div>
+        <h3>
+          {SITE.author.name}
+          <span class="handle">@{SITE.author.handle}</span>
+        </h3>
+        <p class="motto">{SITE.motto}</p>
+        <div class="socials">
+          <a class="icon-btn" href={SITE.author.github} target="_blank" rel="noopener" title="GitHub" aria-label="GitHub"><Icon name="github" /></a>
+          <a class="icon-btn" href={`mailto:${SITE.author.email}`} title="Email" aria-label="邮件"><Icon name="mail" /></a>
+          <a class="icon-btn" href="/archive/" title="归档" aria-label="归档"><Icon name="archive" /></a>
+          <a class="icon-btn" href="/about/" title="关于" aria-label="关于"><Icon name="user" /></a>
+        </div>
+        <div class="stats">
+          <div><b>{posts.length}</b><span>文章</span></div>
+          <div><b>{projects.length}</b><span>项目</span></div>
+          <div><b>{tm.size}</b><span>标签</span></div>
+          <div><b>{days}</b><span>天数</span></div>
+        </div>
+      </div>
+
+      {
+        SITE.announcement.enabled && (
+          <div class="card announce reveal">
+            <div class="announce-head">
+              <span class="dot" />
+              <Icon name="eye" /> 公告
+            </div>
+            <p>{SITE.announcement.text}</p>
+            <a class="chip" style="margin-top:10px" href={SITE.announcement.link}>
+              🧧 读开发日志 #0
+            </a>
+          </div>
+        )
+      }
+
+      <div class="card aside-block reveal">
+        <h4><Icon name="folder" /> 分类与标签</h4>
+        {
+          CATEGORIES.map((c) => (
+            <div class={`cat-row cat-${c}`}>
+              <span class="cdot" />
+              {c}
+              <b>{posts.filter((p) => p.data.category === c).length}</b>
+            </div>
+          ))
+        }
+        <div class="tag-cloud" style="margin-top:12px">
+          {topTags.map(([t, n]) => <span class="chip">{t} {n}</span>)}
+        </div>
+      </div>
+
+      <div class="card aside-block reveal">
+        <h4><Icon name="link" /> 朋友们</h4>
+        <div class="friends-grid">
+          {
+            friends.map((f) => (
+              <a class="friend-mini" href={f.data.url} target="_blank" rel="noopener" title={f.data.desc}>
+                <span class="fa" style={`background:${coverVisual(f.data.name).g}`}>
+                  {f.data.name.slice(0, 1)}
+                </span>
+                <span>{f.data.name}</span>
+              </a>
+            ))
+          }
+        </div>
+        <a class="card-more" href="/links/">全部友链 →</a>
+      </div>
+    </aside>
+  </div>
+</BaseLayout>
+
+<script>
+  // typing taglines (hero)
+  const el = document.getElementById("typed");
+  if (el) {
+    const lines: string[] = JSON.parse(el.dataset.lines ?? "[]");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || lines.length === 0) {
+      el.textContent = lines[0] ?? "";
+    } else {
+      let li = 0,
+        ci = 0,
+        del = false;
+      const step = () => {
+        const line = lines[li] ?? "";
+        ci += del ? -1 : 1;
+        el.textContent = line.slice(0, ci);
+        let wait = del ? 36 : 90;
+        if (!del && ci === line.length) {
+          del = true;
+          wait = 2100;
+        } else if (del && ci === 0) {
+          del = false;
+          li = (li + 1) % lines.length;
+          wait = 400;
+        }
+        setTimeout(step, wait);
+      };
+      step();
+    }
+  }
+</script>

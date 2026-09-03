@@ -1,0 +1,85 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/base/Icon.astro";
+import { CATEGORIES } from "../config/site";
+import { postsByDate, tagMap, fmtDate, siteDays, type Post } from "../utils/content";
+
+const posts = await postsByDate();
+const tm = tagMap(posts);
+
+const years = new Map<string, Post[]>();
+for (const p of posts) {
+  const y = String(p.data.date.getFullYear());
+  if (!years.has(y)) years.set(y, []);
+  years.get(y)!.push(p);
+}
+const sortedYears = [...years.keys()].sort((a, b) => Number(b) - Number(a));
+
+// last 12 months publishing heatmap (computed from real data)
+const now = new Date();
+const months: { key: string; count: number }[] = [];
+for (let k = 11; k >= 0; k--) {
+  const d = new Date(now.getFullYear(), now.getMonth() - k, 1);
+  const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+  months.push({ key, count: posts.filter((p) => fmtDate(p.data.date).startsWith(key)).length });
+}
+---
+
+<BaseLayout title="归档" description={`归档 · ${posts.length} 篇文章`}>
+  <div class="view-pad container">
+    <div class="page-head">
+      <h1>归档 <span class="grad-text">Archive</span></h1>
+      <p>{posts.length} 篇文章 · 始于 {fmtDate(posts[posts.length - 1].data.date)}</p>
+    </div>
+
+    <div class="archive-layout">
+      <div>
+        {
+          sortedYears.map((y) => (
+            <>
+              <div class="archive-year reveal">
+                {y} <small>{years.get(y)!.length} 篇</small>
+              </div>
+              {years.get(y)!.map((p) => (
+                <a class={`archive-item cat-${p.data.category} reveal`} href={`/posts/${p.id}/`}>
+                  <time>{fmtDate(p.data.date).slice(5)}</time>
+                  <span class="cdot" />
+                  <span class="t">{p.data.title}</span>
+                </a>
+              ))}
+            </>
+          ))
+        }
+      </div>
+
+      <aside>
+        <div class="card aside-block">
+          <h4><Icon name="chart" /> 统计</h4>
+          <div class="cat-row"><span class="cdot" style="--c:var(--brand)" /> 文章总数<b>{posts.length}</b></div>
+          <div class="cat-row"><span class="cdot" style="--c:#14b8a6" /> 标签总数<b>{tm.size}</b></div>
+          <div class="cat-row"><span class="cdot" style="--c:#f59e0b" /> 已运行<b>{siteDays()} 天</b></div>
+        </div>
+        <div class="card aside-block">
+          <h4><Icon name="zap" /> 发布热力</h4>
+          <div class="month-heat">
+            {months.map((m) => {
+              const lv = m.count === 0 ? "" : m.count >= 3 ? "mh-lv4" : m.count === 2 ? "mh-lv2" : "mh-lv1";
+              return <i class={lv} title={`${m.key} · ${m.count} 篇`} />;
+            })}
+          </div>
+          <p style="font-size:11px;color:var(--text-3);margin-top:8px">近 12 个月发文密度（真实数据统计）</p>
+        </div>
+        <div class="card aside-block">
+          <h4><Icon name="folder" /> 分类</h4>
+          {CATEGORIES.map((c) => (
+            <div class={`cat-row cat-${c}`}>
+              <span class="cdot" />
+              {c}
+              <b>{posts.filter((p) => p.data.category === c).length}</b>
+            </div>
+          ))}
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,7 +1,7 @@
 {
   "name": "ikotheme",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "An Astro blog theme where posts and projects are both first-class citizens.",
   "repository": {
     "type": "git",

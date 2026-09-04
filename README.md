@@ -16,8 +16,9 @@ transitions — all static, all fast.
 
 ## Status
 
-✅ **v1.0 released** — M1–M4 landed (layout, collections, search, comments,
-RSS, per-post OG images, a11y pass, Lighthouse CI gate). See the
+✅ **v1.1 released** — v1.0 (layout, collections, search, comments, RSS,
+per-post OG images, a11y pass, Lighthouse CI gate) plus image lightbox,
+LaTeX math, page transitions, and a configurable sidebar. See the
 [roadmap](#roadmap) for what's next.
 
 ## Quick Start

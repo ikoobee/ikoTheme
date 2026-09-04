@@ -12,7 +12,7 @@ English documentation: [README.md](README.md)
 （精选 → 最新文章 → 开源项目 → 动态）+ 右侧伴随栏，暗色模式、归档时间线、
 阅读增强、图片灯箱、KaTeX 数学公式、页面过渡，全静态、零默认客户端 JS。
 
-> ✅ **v1.0 已发布**——M1–M4 全部完成（布局、内容集合、全文搜索、评论适配、RSS、每篇文章动态分享图、无障碍走查、Lighthouse CI 门禁），进度以 [README.md](README.md#roadmap) 的 Roadmap 为准。
+> ✅ **v1.1 已发布**——v1.0 全部能力（布局、内容集合、全文搜索、评论适配、RSS、每篇文章动态分享图、无障碍走查、Lighthouse CI 门禁）之上，新增图片灯箱、KaTeX 数学公式、页面过渡与侧边栏配置化，进度以 [README.md](README.md#roadmap) 的 Roadmap 为准。
 
 ## 快速开始
 

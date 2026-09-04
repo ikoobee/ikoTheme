@@ -1,0 +1,37 @@
+---
+/**
+ * Sidebar profile card — avatar, motto, socials, 4-cell stats.
+ * Rendered when "profile" is listed in SIDEBAR (src/config/site.ts).
+ */
+import Icon from "../base/Icon.astro";
+import { SITE } from "../../config/site";
+
+interface Props {
+  posts: number;
+  projects: number;
+  tags: number;
+  days: number;
+}
+const { posts, projects, tags, days } = Astro.props;
+---
+
+<div class="card profile reveal">
+  <div class="p-avatar">E</div>
+  <h3>
+    {SITE.author.name}
+    <span class="handle">@{SITE.author.handle}</span>
+  </h3>
+  <p class="motto">{SITE.motto}</p>
+  <div class="socials">
+    <a class="icon-btn" href={SITE.author.github} target="_blank" rel="noopener" title="GitHub" aria-label="GitHub"><Icon name="github" /></a>
+    <a class="icon-btn" href={`mailto:${SITE.author.email}`} title="Email" aria-label="邮件"><Icon name="mail" /></a>
+    <a class="icon-btn" href="/archive/" title="归档" aria-label="归档"><Icon name="archive" /></a>
+    <a class="icon-btn" href="/about/" title="关于" aria-label="关于"><Icon name="user" /></a>
+  </div>
+  <div class="stats">
+    <div><b>{posts}</b><span>文章</span></div>
+    <div><b>{projects}</b><span>项目</span></div>
+    <div><b>{tags}</b><span>标签</span></div>
+    <div><b>{days}</b><span>天数</span></div>
+  </div>
+</div>

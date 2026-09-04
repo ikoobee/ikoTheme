@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Image lightbox on article pages (native `<dialog>`, zero dependencies,
+  caption from `alt`, Esc/backdrop to close)
+- LaTeX math rendering (`$…$` inline, `$$…$$` display) via remark-math +
+  rehype-katex — rendered at build time, self-hosted KaTeX CSS and fonts
+- Page transitions via the View Transitions API (Astro `ClientRouter`);
+  interactive scripts re-initialize per navigation, search modal and lightbox
+  persist across swaps
+- Configurable home sidebar: `SIDEBAR` array in `src/config/site.ts` drives
+  block order and visibility (profile / announce / taxonomy / friends)
+
 ## [1.0.0] - 2026-09-04
 
 ### Added

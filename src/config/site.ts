@@ -59,6 +59,13 @@ export const NAV: NavItem[] = [
   { id: "about", label: "关于", href: "/about/", icon: "user" },
 ];
 
+/**
+ * Home companion sidebar — blocks rendered top-to-bottom in this order.
+ * Remove or reorder entries to change what the homepage sidebar shows.
+ */
+export const SIDEBAR = ["profile", "announce", "taxonomy", "friends"] as const;
+export type SidebarBlock = (typeof SIDEBAR)[number];
+
 export const CATEGORIES = ["Code", "Tutorial", "Essay", "Daily"] as const;
 export type Category = (typeof CATEGORIES)[number];
 

@@ -38,13 +38,18 @@ import Icon from "./Icon.astro";
 }
 
 <script>
-  const btn = document.getElementById("donateBtn");
-  const mask = document.getElementById("donateMask");
-  btn?.addEventListener("click", () => mask?.classList.add("open"));
-  mask?.addEventListener("click", (e) => {
-    if (e.target === mask) mask.classList.remove("open");
+  // element bindings re-init after each client-side navigation; the Escape
+  // handler is bound once on the persistent document
+  document.addEventListener("astro:page-load", () => {
+    const btn = document.getElementById("donateBtn");
+    const mask = document.getElementById("donateMask");
+    btn?.addEventListener("click", () => mask?.classList.add("open"));
+    mask?.addEventListener("click", (e) => {
+      if (e.target === mask) mask?.classList.remove("open");
+    });
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") mask?.classList.remove("open");
+    if (e.key === "Escape")
+      document.getElementById("donateMask")?.classList.remove("open");
   });
 </script>

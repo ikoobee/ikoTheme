@@ -8,7 +8,14 @@ import Icon from "./Icon.astro";
 import { NAV } from "../../config/site";
 ---
 
-<div class="modal-mask" id="searchMask" role="dialog" aria-modal="true" aria-label="站内搜索">
+<div
+  class="modal-mask"
+  id="searchMask"
+  role="dialog"
+  aria-modal="true"
+  aria-label="站内搜索"
+  transition:persist="searchMask"
+>
   <div class="search-modal">
     <div class="search-input-row">
       <span class="search-ic"><Icon name="search" /></span>
@@ -141,7 +148,11 @@ import { NAV } from "../../config/site";
     mask?.classList.remove("open");
   }
 
-  document.getElementById("searchBtn")?.addEventListener("click", open);
+  // searchBtn lives in the header, which is swapped on client-side navigations —
+  // delegate from document so the binding survives
+  document.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).closest("#searchBtn")) open();
+  });
   mask?.addEventListener("click", (e) => {
     if (e.target === mask) close();
   });
@@ -158,7 +169,10 @@ import { NAV } from "../../config/site";
       const it = items[sel < 0 ? 0 : sel];
       if (it) {
         close();
-        location.href = it.url;
+        // a synthetic link click is intercepted by ClientRouter → smooth nav
+        const a = document.createElement("a");
+        a.href = it.url;
+        a.click();
       }
     }
   });

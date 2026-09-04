@@ -2,6 +2,8 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import rehypeSlug from "rehype-slug";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 
 // https://astro.build/config
 export default defineConfig({
@@ -9,7 +11,8 @@ export default defineConfig({
   site: "https://example.com",
   integrations: [sitemap()],
   markdown: {
-    rehypePlugins: [rehypeSlug],
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [rehypeSlug, rehypeKatex],
     shikiConfig: {
       // dual themes, switched via [data-theme] (see styles/global.css)
       themes: { light: "github-light", dark: "github-dark" },

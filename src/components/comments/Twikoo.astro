@@ -14,6 +14,8 @@ const { envId } = Astro.props;
 </div>
 
 <script>
+  // lazy-load on scroll; re-inits after each client-side navigation
+  document.addEventListener("astro:page-load", () => {
   const mount = document.getElementById("twikoo-mount");
   if (mount) {
     const load = () => {
@@ -40,4 +42,5 @@ const { envId } = Astro.props;
       }
     }).observe(mount);
   }
+  });
 </script>

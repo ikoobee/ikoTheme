@@ -1,0 +1,23 @@
+---
+/**
+ * Sidebar announcement card — gated by SITE.announcement.enabled.
+ * Rendered when "announce" is listed in SIDEBAR (src/config/site.ts).
+ */
+import Icon from "../base/Icon.astro";
+import { SITE } from "../../config/site";
+---
+
+{
+  SITE.announcement.enabled && (
+    <div class="card announce reveal">
+      <div class="announce-head">
+        <span class="dot" />
+        <Icon name="eye" /> 公告
+      </div>
+      <p>{SITE.announcement.text}</p>
+      <a class="chip" style="margin-top:10px" href={SITE.announcement.link}>
+        查看详情 →
+      </a>
+    </div>
+  )
+}

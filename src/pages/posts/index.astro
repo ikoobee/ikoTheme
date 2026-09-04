@@ -81,18 +81,21 @@ const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
 </BaseLayout>
 
 <script>
+  // client-side filtering with shareable hash state; re-inits after each
+  // client-side navigation (astro:page-load fires on first load too)
   interface Filter {
     cat: string;
     tag: string | null;
   }
-  const rows = Array.from(document.querySelectorAll<HTMLElement>("[data-post-row]"));
-  const catBtns = document.querySelectorAll<HTMLElement>("[data-cat-btn]");
-  const tagBtns = document.querySelectorAll<HTMLElement>("[data-tag-btn]");
-  const tagBar = document.getElementById("tagBar");
-  const clearTag = document.getElementById("clearTag");
-  const countEl = document.getElementById("postCount");
 
   function apply(f: Filter) {
+    const rows = Array.from(document.querySelectorAll<HTMLElement>("[data-post-row]"));
+    if (!rows.length) return;
+    const catBtns = document.querySelectorAll<HTMLElement>("[data-cat-btn]");
+    const tagBtns = document.querySelectorAll<HTMLElement>("[data-tag-btn]");
+    const tagBar = document.getElementById("tagBar");
+    const clearTag = document.getElementById("clearTag");
+    const countEl = document.getElementById("postCount");
     let shown = 0;
     for (const r of rows) {
       const okCat = f.cat === "all" || r.dataset.cat === f.cat;
@@ -129,29 +132,40 @@ const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
   }
 
   let cur = parseHash();
-  apply(cur);
 
-  catBtns.forEach((c) =>
-    c.addEventListener("click", () => {
-      cur = { cat: c.dataset.catBtn ?? "all", tag: null };
-      writeHash(cur);
-      apply(cur);
-    }),
-  );
-  tagBtns.forEach((c) =>
-    c.addEventListener("click", () => {
-      const t = c.dataset.tagBtn ?? null;
-      cur = { cat: "all", tag: cur.tag === t ? null : t };
-      writeHash(cur);
-      apply(cur);
-    }),
-  );
-  clearTag?.addEventListener("click", () => {
-    cur = { cat: "all", tag: null };
-    writeHash(cur);
+  document.addEventListener("astro:page-load", () => {
+    const catBtns = document.querySelectorAll<HTMLElement>("[data-cat-btn]");
+    const tagBtns = document.querySelectorAll<HTMLElement>("[data-tag-btn]");
+    const clearTag = document.getElementById("clearTag");
+    if (!catBtns.length && !tagBtns.length) return;
+
+    cur = parseHash();
     apply(cur);
+
+    catBtns.forEach((c) =>
+      c.addEventListener("click", () => {
+        cur = { cat: c.dataset.catBtn ?? "all", tag: null };
+        writeHash(cur);
+        apply(cur);
+      }),
+    );
+    tagBtns.forEach((c) =>
+      c.addEventListener("click", () => {
+        const t = c.dataset.tagBtn ?? null;
+        cur = { cat: "all", tag: cur.tag === t ? null : t };
+        writeHash(cur);
+        apply(cur);
+      }),
+    );
+    clearTag?.addEventListener("click", () => {
+      cur = { cat: "all", tag: null };
+      writeHash(cur);
+      apply(cur);
+    });
   });
-  // react to hash changes (e.g. navigating here with a filter preselected)
+
+  // bound once on the persistent window: re-applies whatever the hash says
+  // (covers hash navigation onto this page from other pages)
   addEventListener("hashchange", () => {
     cur = parseHash();
     apply(cur);

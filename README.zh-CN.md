@@ -10,7 +10,7 @@ English documentation: [README.md](README.md)
 
 为独立开发者与开源作者打造：用一个干净的首页同时展示作品与写作——主内容流
 （精选 → 最新文章 → 开源项目 → 动态）+ 右侧伴随栏，暗色模式、归档时间线、
-阅读增强，全静态、零默认客户端 JS。
+阅读增强、图片灯箱、KaTeX 数学公式、页面过渡，全静态、零默认客户端 JS。
 
 > ✅ **v1.0 已发布**——M1–M4 全部完成（布局、内容集合、全文搜索、评论适配、RSS、每篇文章动态分享图、无障碍走查、Lighthouse CI 门禁），进度以 [README.md](README.md#roadmap) 的 Roadmap 为准。
 
@@ -35,11 +35,13 @@ npm run dev        # http://localhost:4321
 | `moments` | `src/content/moments/*.md` | 短动态（`/moments`） |
 | `friends` | `src/content/friends/*.md` | 友链（`/links`） |
 
-站点身份（名称、作者、导航、签名档……）统一在
-[`src/config/site.ts`](src/config/site.ts) 一处配置；评论系统同样在此切换：
+站点身份（名称、作者、导航、签名档、首页侧边栏板块……）统一在
+[`src/config/site.ts`](src/config/site.ts) 一处配置（侧边栏由 `SIDEBAR` 数组
+控制显示与顺序）；评论系统同样在此切换：
 内置 **giscus / Waline / Twikoo** 三种适配器，`COMMENTS.provider` 三选一开启
 （启用指南见 [docs/comments.md](docs/comments.md)），未启用的适配器不进入客户端
-产物，全部懒加载。站内全文搜索（Pagefind）由 `npm run build` 自动生成索引。
+产物，全部懒加载。站内全文搜索（Pagefind）由 `npm run build` 自动生成索引；
+数学公式用 `$…$`（行内）或 `$$…$$`（独立成段）书写，构建期由 KaTeX 渲染。
 
 ```bash
 npm run build      # 构建产物到 dist/，并生成 Pagefind 搜索索引

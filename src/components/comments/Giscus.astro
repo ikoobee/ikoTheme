@@ -24,8 +24,10 @@ const { repo, repoId, category, categoryId } = Astro.props;
 </div>
 
 <script>
-  const mount = document.getElementById("giscus-mount");
-  if (mount) {
+  // lazy-load on scroll; re-inits after each client-side navigation
+  document.addEventListener("astro:page-load", () => {
+    const mount = document.getElementById("giscus-mount");
+    if (!mount) return;
     const theme = () =>
       document.documentElement.dataset.theme === "dark" ? "dark" : "light";
     const load = () => {
@@ -47,14 +49,20 @@ const { repo, repoId, category, categoryId } = Astro.props;
       s.dataset.lang = "zh-CN";
       mount.appendChild(s);
       mount.querySelector(".comments-loading")?.remove();
-      // keep giscus iframe theme in sync with the site theme toggle
-      new MutationObserver(() => {
+      // keep giscus iframe theme in sync with the site theme toggle;
+      // self-disconnect once this page is swapped away
+      const mo = new MutationObserver(() => {
+        if (!mount.isConnected) {
+          mo.disconnect();
+          return;
+        }
         const frame = mount.querySelector("iframe");
         frame?.contentWindow?.postMessage(
           { giscus: { setConfig: { theme: theme() } } },
           "https://giscus.app",
         );
-      }).observe(document.documentElement, {
+      });
+      mo.observe(document.documentElement, {
         attributes: true,
         attributeFilter: ["data-theme"],
       });
@@ -65,5 +73,5 @@ const { repo, repoId, category, categoryId } = Astro.props;
         load();
       }
     }).observe(mount);
-  }
+  });
 </script>

@@ -3,12 +3,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/base/Icon.astro";
 import PostCard from "../components/cards/PostCard.astro";
 import ProjectCard from "../components/cards/ProjectCard.astro";
-import { SITE, STATUS_LABEL, CATEGORIES } from "../config/site";
+import ProfileCard from "../components/cards/ProfileCard.astro";
+import AnnounceCard from "../components/cards/AnnounceCard.astro";
+import TaxonomyCard from "../components/cards/TaxonomyCard.astro";
+import FriendsCard from "../components/cards/FriendsCard.astro";
+import { SITE, STATUS_LABEL, SIDEBAR } from "../config/site";
 import {
   postsByDate,
   projectsAll,
   momentsAll,
-  friendsAll,
   tagMap,
   readingTime,
   fmtDate,
@@ -20,7 +23,6 @@ import {
 const posts = await postsByDate();
 const projects = await projectsAll();
 const moments = (await momentsAll()).slice(0, 3);
-const friends = await friendsAll();
 
 const pinned = posts.find((p) => p.data.pinned) ?? posts[0];
 const latest = posts.filter((p) => p !== pinned).slice(0, 4);
@@ -28,7 +30,6 @@ const featProjects = projects.filter((p) => p.data.featured);
 const moreProjects = projects.filter((p) => !p.data.featured).slice(0, 2);
 
 const tm = tagMap(posts);
-const topTags = [...tm.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6);
 const days = siteDays();
 const pinnedCover = pinned ? coverVisual(pinned.id) : null;
 ---
@@ -191,160 +192,108 @@ const pinnedCover = pinned ? coverVisual(pinned.id) : null;
       </section>
     </div>
 
-    <!-- right: companion sidebar -->
+    <!-- right: companion sidebar, driven by SIDEBAR in site.ts -->
     <aside class="home-side">
-      <div class="card profile reveal">
-        <div class="p-avatar">E</div>
-        <h3>
-          {SITE.author.name}
-          <span class="handle">@{SITE.author.handle}</span>
-        </h3>
-        <p class="motto">{SITE.motto}</p>
-        <div class="socials">
-          <a class="icon-btn" href={SITE.author.github} target="_blank" rel="noopener" title="GitHub" aria-label="GitHub"><Icon name="github" /></a>
-          <a class="icon-btn" href={`mailto:${SITE.author.email}`} title="Email" aria-label="邮件"><Icon name="mail" /></a>
-          <a class="icon-btn" href="/archive/" title="归档" aria-label="归档"><Icon name="archive" /></a>
-          <a class="icon-btn" href="/about/" title="关于" aria-label="关于"><Icon name="user" /></a>
-        </div>
-        <div class="stats">
-          <div><b>{posts.length}</b><span>文章</span></div>
-          <div><b>{projects.length}</b><span>项目</span></div>
-          <div><b>{tm.size}</b><span>标签</span></div>
-          <div><b>{days}</b><span>天数</span></div>
-        </div>
-      </div>
-
       {
-        SITE.announcement.enabled && (
-          <div class="card announce reveal">
-            <div class="announce-head">
-              <span class="dot" />
-              <Icon name="eye" /> 公告
-            </div>
-            <p>{SITE.announcement.text}</p>
-            <a class="chip" style="margin-top:10px" href={SITE.announcement.link}>
-              🧧 读开发日志 #0
-            </a>
-          </div>
+        SIDEBAR.map((b) =>
+          b === "profile" ? (
+            <ProfileCard posts={posts.length} projects={projects.length} tags={tm.size} days={days} />
+          ) : b === "announce" ? (
+            <AnnounceCard />
+          ) : b === "taxonomy" ? (
+            <TaxonomyCard />
+          ) : b === "friends" ? (
+            <FriendsCard />
+          ) : null,
         )
       }
-
-      <div class="card aside-block reveal">
-        <h4><Icon name="folder" /> 分类与标签</h4>
-        {
-          CATEGORIES.map((c) => (
-            <a class={`cat-row cat-${c}`} href={`/posts/#cat=${c}`}>
-              <span class="cdot" />
-              {c}
-              <b>{posts.filter((p) => p.data.category === c).length}</b>
-            </a>
-          ))
-        }
-        <div class="tag-cloud" style="margin-top:12px">
-          {topTags.map(([t, n]) => (
-            <a class="chip" href={`/posts/#tag=${encodeURIComponent(t)}`}>
-              {t} {n}
-            </a>
-          ))}
-        </div>
-      </div>
-
-      <div class="card aside-block reveal">
-        <h4><Icon name="link" /> 朋友们</h4>
-        <div class="friends-grid">
-          {
-            friends.map((f) => (
-              <a class="friend-mini" href={f.data.url} target="_blank" rel="noopener" title={f.data.desc}>
-                <span class="fa" style={`background:${coverVisual(f.data.name).g}`}>
-                  {f.data.name.slice(0, 1)}
-                </span>
-                <span>{f.data.name}</span>
-              </a>
-            ))
-          }
-        </div>
-        <a class="card-more" href="/links/">全部友链 →</a>
-      </div>
     </aside>
   </div>
 </BaseLayout>
 
 <script>
-  // typing taglines (hero)
-  const el = document.getElementById("typed");
-  if (el) {
-    const lines: string[] = JSON.parse(el.dataset.lines ?? "[]");
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || lines.length === 0) {
-      el.textContent = lines[0] ?? "";
-    } else {
-      let li = 0,
-        ci = 0,
-        del = false;
-      const step = () => {
-        const line = lines[li] ?? "";
-        ci += del ? -1 : 1;
-        el.textContent = line.slice(0, ci);
-        let wait = del ? 36 : 90;
-        if (!del && ci === line.length) {
-          del = true;
-          wait = 2100;
-        } else if (del && ci === 0) {
+  // hero scripts re-init after each client-side navigation (astro:page-load
+  // also fires on first load); loops self-terminate once their element is
+  // detached from the document
+  document.addEventListener("astro:page-load", () => {
+    // typing taglines
+    const el = document.getElementById("typed");
+    if (el) {
+      const lines: string[] = JSON.parse(el.dataset.lines ?? "[]");
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches || lines.length === 0) {
+        el.textContent = lines[0] ?? "";
+      } else {
+        let li = 0,
+          ci = 0,
           del = false;
-          li = (li + 1) % lines.length;
-          wait = 400;
-        }
-        setTimeout(step, wait);
-      };
-      step();
-    }
-  }
-
-  // hero particles (snow-like drift, reduced-motion users skip)
-  const canvas = document.getElementById("heroCanvas") as HTMLCanvasElement | null;
-  if (canvas && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      let W = 0,
-        H = 0;
-      const parts: { x: number; y: number; r: number; s: number; d: number; o: number }[] = [];
-      const size = () => {
-        W = canvas.width = canvas.offsetWidth;
-        H = canvas.height = canvas.offsetHeight;
-      };
-      size();
-      const N = Math.max(36, Math.min(80, Math.round(W / 16)));
-      for (let i = 0; i < N; i++) {
-        parts.push({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          r: 0.6 + Math.random() * 1.9,
-          s: 0.2 + Math.random() * 0.85,
-          d: (Math.random() * 2 - 1) * 0.3,
-          o: 0.22 + Math.random() * 0.6,
-        });
-      }
-      const tick = () => {
-        if (canvas.offsetWidth !== W) size();
-        ctx.clearRect(0, 0, W, H);
-        ctx.fillStyle = "#fff";
-        for (const p of parts) {
-          p.y += p.s;
-          p.x += p.d;
-          if (p.y > H + 4) {
-            p.y = -4;
-            p.x = Math.random() * W;
+        const step = () => {
+          if (!el.isConnected) return; // page navigated away
+          const line = lines[li] ?? "";
+          ci += del ? -1 : 1;
+          el.textContent = line.slice(0, ci);
+          let wait = del ? 36 : 90;
+          if (!del && ci === line.length) {
+            del = true;
+            wait = 2100;
+          } else if (del && ci === 0) {
+            del = false;
+            li = (li + 1) % lines.length;
+            wait = 400;
           }
-          if (p.x > W + 4) p.x = -4;
-          else if (p.x < -4) p.x = W + 4;
-          ctx.globalAlpha = p.o;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, 6.3);
-          ctx.fill();
-        }
-        ctx.globalAlpha = 1;
-        requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
+          setTimeout(step, wait);
+        };
+        step();
+      }
     }
-  }
+
+    // hero particles (snow-like drift, reduced-motion users skip)
+    const canvas = document.getElementById("heroCanvas") as HTMLCanvasElement | null;
+    if (canvas && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        let W = 0,
+          H = 0;
+        const parts: { x: number; y: number; r: number; s: number; d: number; o: number }[] = [];
+        const size = () => {
+          W = canvas.width = canvas.offsetWidth;
+          H = canvas.height = canvas.offsetHeight;
+        };
+        size();
+        const N = Math.max(36, Math.min(80, Math.round(W / 16)));
+        for (let i = 0; i < N; i++) {
+          parts.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: 0.6 + Math.random() * 1.9,
+            s: 0.2 + Math.random() * 0.85,
+            d: (Math.random() * 2 - 1) * 0.3,
+            o: 0.22 + Math.random() * 0.6,
+          });
+        }
+        const tick = () => {
+          if (!canvas.isConnected) return; // page navigated away
+          if (canvas.offsetWidth !== W) size();
+          ctx.clearRect(0, 0, W, H);
+          ctx.fillStyle = "#fff";
+          for (const p of parts) {
+            p.y += p.s;
+            p.x += p.d;
+            if (p.y > H + 4) {
+              p.y = -4;
+              p.x = Math.random() * W;
+            }
+            if (p.x > W + 4) p.x = -4;
+            else if (p.x < -4) p.x = W + 4;
+            ctx.globalAlpha = p.o;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, 6.3);
+            ctx.fill();
+          }
+          ctx.globalAlpha = 1;
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+    }
+  });
 </script>

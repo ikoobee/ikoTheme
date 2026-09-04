@@ -1,0 +1,35 @@
+---
+/**
+ * Sidebar taxonomy card — categories with counts + top tags.
+ * Rendered when "taxonomy" is listed in SIDEBAR (src/config/site.ts).
+ */
+import Icon from "../base/Icon.astro";
+import { CATEGORIES } from "../../config/site";
+import { postsByDate, tagMap } from "../../utils/content";
+
+const posts = await postsByDate();
+const tm = tagMap(posts);
+const topTags = [...tm.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6);
+---
+
+<div class="card aside-block reveal">
+  <h4><Icon name="folder" /> 分类与标签</h4>
+  {
+    CATEGORIES.map((c) => (
+      <a class={`cat-row cat-${c}`} href={`/posts/#cat=${c}`}>
+        <span class="cdot" />
+        {c}
+        <b>{posts.filter((p) => p.data.category === c).length}</b>
+      </a>
+    ))
+  }
+  <div class="tag-cloud" style="margin-top:12px">
+    {
+      topTags.map(([t, n]) => (
+        <a class="chip" href={`/posts/#tag=${encodeURIComponent(t)}`}>
+          {t} {n}
+        </a>
+      ))
+    }
+  </div>
+</div>

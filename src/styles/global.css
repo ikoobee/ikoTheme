@@ -510,3 +510,59 @@ kbd { font-size: 11px; color: var(--text-3); border: 1px solid var(--border); bo
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   html { scroll-behavior: auto; }
 }
+
+/* ===== v1.1: image lightbox + katex ===== */
+.prose img { cursor: zoom-in; }
+#lightbox {
+  border: none;
+  background: transparent;
+  padding: 0;
+  max-width: none;
+  max-height: none;
+}
+#lightbox[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  animation: lb-in 0.18s ease;
+}
+#lightbox::backdrop {
+  background: rgba(8, 10, 18, 0.85);
+  backdrop-filter: blur(6px);
+}
+#lightbox img {
+  max-width: min(92vw, 1080px);
+  max-height: 80vh;
+  border-radius: 10px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+}
+#lightboxCap {
+  margin: 0;
+  color: #fff;
+  opacity: 0.75;
+  font-size: 13px;
+  text-align: center;
+  max-width: 80vw;
+}
+#lightboxCap:empty { display: none; }
+#lightboxClose {
+  position: fixed;
+  top: 18px;
+  right: 22px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 15px;
+  transition: background 0.15s;
+}
+#lightboxClose:hover { background: rgba(255, 255, 255, 0.28); }
+@keyframes lb-in {
+  from { opacity: 0; transform: scale(0.96); }
+}
+/* KaTeX: horizontal scroll for wide display math on small screens */
+.katex-display { overflow-x: auto; padding: 2px 0; }

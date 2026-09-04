@@ -1,0 +1,27 @@
+---
+/**
+ * Sidebar friends card — mini grid of friend links.
+ * Rendered when "friends" is listed in SIDEBAR (src/config/site.ts).
+ */
+import Icon from "../base/Icon.astro";
+import { friendsAll, coverVisual } from "../../utils/content";
+
+const friends = await friendsAll();
+---
+
+<div class="card aside-block reveal">
+  <h4><Icon name="link" /> 朋友们</h4>
+  <div class="friends-grid">
+    {
+      friends.map((f) => (
+        <a class="friend-mini" href={f.data.url} target="_blank" rel="noopener" title={f.data.desc}>
+          <span class="fa" style={`background:${coverVisual(f.data.name).g}`}>
+            {f.data.name.slice(0, 1)}
+          </span>
+          <span>{f.data.name}</span>
+        </a>
+      ))
+    }
+  </div>
+  <a class="card-more" href="/links/">全部友链 →</a>
+</div>

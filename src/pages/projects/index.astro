@@ -85,21 +85,25 @@ const rest = projects.filter((p) => !p.data.featured);
 </BaseLayout>
 
 <script>
-  // client-side status filter (all cards are in the DOM, zero framework)
-  const chips = document.querySelectorAll<HTMLElement>("[data-proj-filter]");
-  const cards = document.querySelectorAll<HTMLElement>("[data-status]");
-  const empty = document.getElementById("projEmpty");
-  const apply = (f: string) => {
-    let shown = 0;
-    cards.forEach((c) => {
-      const ok = f === "all" || c.dataset.status === f;
-      c.style.display = ok ? "" : "none";
-      if (ok) shown++;
-    });
-    chips.forEach((c) => c.classList.toggle("on", (c.dataset.projFilter ?? "all") === f));
-    if (empty) empty.style.display = shown ? "none" : "";
-  };
-  chips.forEach((c) =>
-    c.addEventListener("click", () => apply(c.dataset.projFilter ?? "all")),
-  );
+  // client-side status filter (all cards are in the DOM, zero framework);
+  // re-inits after each client-side navigation
+  document.addEventListener("astro:page-load", () => {
+    const chips = document.querySelectorAll<HTMLElement>("[data-proj-filter]");
+    const cards = document.querySelectorAll<HTMLElement>("[data-status]");
+    if (!chips.length) return;
+    const empty = document.getElementById("projEmpty");
+    const apply = (f: string) => {
+      let shown = 0;
+      cards.forEach((c) => {
+        const ok = f === "all" || c.dataset.status === f;
+        c.style.display = ok ? "" : "none";
+        if (ok) shown++;
+      });
+      chips.forEach((c) => c.classList.toggle("on", (c.dataset.projFilter ?? "all") === f));
+      if (empty) empty.style.display = shown ? "none" : "";
+    };
+    chips.forEach((c) =>
+      c.addEventListener("click", () => apply(c.dataset.projFilter ?? "all")),
+    );
+  });
 </script>

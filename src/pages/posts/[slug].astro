@@ -145,17 +145,5 @@ const cover = coverVisual(post.id);
     </div>
   </div>
 </BaseLayout>
+<!-- reading progress bar is driven by the shared scroll handler in BaseLayout -->
 
-<script>
-  // reading progress bar (article page only)
-  const bar = document.getElementById("readProgress");
-  if (bar) {
-    const update = () => {
-      const h = document.documentElement;
-      const max = h.scrollHeight - innerHeight;
-      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
-    };
-    addEventListener("scroll", update, { passive: true });
-    update();
-  }
-</script>

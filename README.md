@@ -9,7 +9,8 @@
 Built for indie developers and open-source authors who want one clean homepage
 for their writing *and* their work: a main content stream (featured → latest
 posts → projects → moments) plus a companion sidebar, dark mode, an archive
-timeline, and reading enhancements — all static, all fast.
+timeline, reading enhancements, an image lightbox, KaTeX math, and smooth page
+transitions — all static, all fast.
 
 > 简体中文说明见 [README.zh-CN.md](README.zh-CN.md)。
 
@@ -62,6 +63,10 @@ npm run check      # astro check (types + content schema)
 - RSS with full-text content, sitemap, SEO meta + default OG image
 - Posts pagination (6 per page) once you have enough content
 - Archive timeline with per-month publishing heatmap (computed from real data)
+- Image lightbox (native `<dialog>`, zero dependencies) and LaTeX math
+  (remark-math + rehype-katex, rendered at build time)
+- Page transitions via the View Transitions API; sidebar blocks configurable
+  through the `SIDEBAR` array in `src/config/site.ts`
 - Zero client-side JS by default; styles driven by design tokens
 
 ### Roadmap
@@ -71,7 +76,9 @@ npm run check      # astro check (types + content schema)
 - [x] M4: per-post OG images (build-time, sharp), accessibility pass (landmarks, skip link,
       AA contrast tokens), Lighthouse CI gate (4 categories ≥ 90)
 - [x] v1.0 release + template usage (`npm create astro@latest -- --template ikoobee/ikoTheme`)
-- [ ] v1.1: i18n (zh/en), recent-searches, optional image lightbox
+- [x] v1.1 features: image lightbox, LaTeX math (KaTeX), page transitions
+      (View Transitions API), configurable sidebar
+- [ ] Next: i18n (zh/en), recent searches
 
 ## License
 

@@ -48,13 +48,13 @@ const pinnedCover = pinned ? coverVisual(pinned.id) : null;
           </linearGradient>
           <linearGradient id="aur1" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stop-color="#34d399" stop-opacity="0"></stop>
-            <stop offset=".45" stop-color="#34d399" stop-opacity=".5"></stop>
-            <stop offset=".75" stop-color="#22d3ee" stop-opacity=".28"></stop>
+            <stop offset=".45" stop-color="#34d399" stop-opacity=".85"></stop>
+            <stop offset=".75" stop-color="#22d3ee" stop-opacity=".5"></stop>
             <stop offset="1" stop-color="#22d3ee" stop-opacity="0"></stop>
           </linearGradient>
           <linearGradient id="aur2" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stop-color="#a78bfa" stop-opacity="0"></stop>
-            <stop offset=".5" stop-color="#f0abfc" stop-opacity=".34"></stop>
+            <stop offset=".5" stop-color="#f0abfc" stop-opacity=".7"></stop>
             <stop offset="1" stop-color="#a78bfa" stop-opacity="0"></stop>
           </linearGradient>
           <radialGradient id="sunG">
@@ -80,7 +80,7 @@ const pinnedCover = pinned ? coverVisual(pinned.id) : null;
             <stop offset="0" stop-color="#fff" stop-opacity="0"></stop>
             <stop offset="1" stop-color="#fff" stop-opacity=".95"></stop>
           </linearGradient>
-          <filter id="b36" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="30"></feGaussianBlur></filter>
+          <filter id="b36" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="16"></feGaussianBlur></filter>
           <filter id="b10" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9"></feGaussianBlur></filter>
         </defs>
 
@@ -120,9 +120,11 @@ const pinnedCover = pinned ? coverVisual(pinned.id) : null;
           <circle cx="388" cy="49" r="2.2" fill="#fff"></circle>
         </g>
 
-        <!-- aurora ribbons -->
+        <!-- aurora ribbons: diffused band + bright core line -->
         <path class="aur a1" d="M-80 130 C 260 30, 520 190, 800 110 S 1240 30, 1520 130 L1520 20 L-80 20 Z" fill="url(#aur1)" filter="url(#b36)"></path>
         <path class="aur a2" d="M-80 190 C 320 90, 640 250, 980 160 S 1300 90, 1520 180 L1520 90 L-80 90 Z" fill="url(#aur2)" filter="url(#b36)"></path>
+        <path class="aur a1" d="M-80 128 C 260 34, 520 188, 800 112 S 1240 36, 1520 128" fill="none" stroke="#6ee7b7" stroke-opacity=".85" stroke-width="3" filter="url(#b10)"></path>
+        <path class="aur a2" d="M-80 188 C 320 92, 640 248, 980 162 S 1300 96, 1520 178" fill="none" stroke="#f5d0fe" stroke-opacity=".7" stroke-width="2.5" filter="url(#b10)"></path>
 
         <!-- ringed planet (🪐 motif) -->
         <g class="planet">

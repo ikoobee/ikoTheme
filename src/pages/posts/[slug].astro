@@ -38,6 +38,21 @@ const cover = coverVisual(post.id);
 ---
 
 <BaseLayout title={post.data.title} description={post.data.desc} image={`/og/${post.id}.png`}>
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.data.title,
+      description: post.data.desc,
+      datePublished: post.data.date.toISOString(),
+      ...(post.data.updated ? { dateModified: post.data.updated.toISOString() } : {}),
+      author: { "@type": "Person", name: SITE.author.name, url: SITE.author.github },
+      image: [new URL(`/og/${post.id}.png`, Astro.site ?? new URL(SITE.domain)).href],
+      keywords: post.data.tags.join(", "),
+      inLanguage: "zh-CN",
+    })}
+  />
   <div class="view-pad container">
     <div id="readProgress"></div>
     <div class="article-layout">
@@ -48,7 +63,7 @@ const cover = coverVisual(post.id);
             <span class={`cat cat-${post.data.category}`}>
               <Icon name="folder" /> {post.data.category}
             </span>
-            <span><Icon name="calendar" /> {fmtDate(post.data.date)}</span>
+            <time datetime={post.data.date.toISOString().slice(0, 10)}><Icon name="calendar" /> {fmtDate(post.data.date)}</time>
             <span><Icon name="clock" /> 约 {readingTime(post)} 分钟</span>
             <span><Icon name="pen" /> {wordCount(post).toLocaleString()} 字</span>
           </div>

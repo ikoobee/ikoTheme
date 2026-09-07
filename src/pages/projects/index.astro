@@ -18,14 +18,14 @@ const rest = projects.filter((p) => !p.data.featured);
     </div>
 
     <div class="filter-bar">
-      <button class="chip on" data-proj-filter="all">
+      <button class="chip on" data-proj-filter="all" aria-pressed="true">
         全部 · {projects.length}
       </button>
       {
         Object.keys(STATUS_LABEL).map((s) => {
           const n = projects.filter((p) => p.data.status === s).length;
           return n > 0 ? (
-            <button class={`chip st-${s}`} data-proj-filter={s}>
+            <button class={`chip st-${s}`} data-proj-filter={s} aria-pressed="false">
               {STATUS_LABEL[s]} · {n}
             </button>
           ) : null;
@@ -99,7 +99,11 @@ const rest = projects.filter((p) => !p.data.featured);
         c.style.display = ok ? "" : "none";
         if (ok) shown++;
       });
-      chips.forEach((c) => c.classList.toggle("on", (c.dataset.projFilter ?? "all") === f));
+      chips.forEach((c) => {
+        const on = (c.dataset.projFilter ?? "all") === f;
+        c.classList.toggle("on", on);
+        c.setAttribute("aria-pressed", String(on));
+      });
       if (empty) empty.style.display = shown ? "none" : "";
     };
     chips.forEach((c) =>

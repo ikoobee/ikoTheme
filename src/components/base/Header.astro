@@ -14,7 +14,11 @@ const segment = Astro.url.pathname.split("/").filter(Boolean)[0] ?? "home";
     <div class="nav-menu">
       {
         NAV.map((n) => (
-          <a href={n.href} class={segment === n.id ? "active" : ""}>
+          <a
+            href={n.href}
+            class={segment === n.id ? "active" : ""}
+            aria-current={segment === n.id ? "page" : undefined}
+          >
             <Icon name={n.icon} />
             {n.label}
           </a>
@@ -42,7 +46,11 @@ const segment = Astro.url.pathname.split("/").filter(Boolean)[0] ?? "home";
 <div class="mobile-menu" id="mobileMenu">
   {
     NAV.map((n) => (
-      <a href={n.href} class={segment === n.id ? "active" : ""}>
+      <a
+        href={n.href}
+        class={segment === n.id ? "active" : ""}
+        aria-current={segment === n.id ? "page" : undefined}
+      >
         <Icon name={n.icon} />
         {n.label}
       </a>

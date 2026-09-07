@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- SEO & a11y polish: JSON-LD structured data (`WebSite` site-wide,
+  `BlogPosting` on articles), `og:image` width/height/alt meta,
+  `aria-current` on active nav items, `aria-pressed` on filter chips,
+  keyboard focus trap + focus restore in the search modal, machine-readable
+  `<time datetime>` on dates across cards and article meta
+
 ## [1.1.0] - 2026-09-04
 
 ### Added

@@ -19,12 +19,12 @@ const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
     </div>
 
     <div class="filter-bar">
-      <button class="chip on" data-cat-btn="all">
+      <button class="chip on" data-cat-btn="all" aria-pressed="true">
         全部 · {posts.length}
       </button>
       {
         CATEGORIES.map((c) => (
-          <button class={`chip cat-${c}`} data-cat-btn={c}>
+          <button class={`chip cat-${c}`} data-cat-btn={c} aria-pressed="false">
             {c} · {posts.filter((p) => p.data.category === c).length}
           </button>
         ))
@@ -55,7 +55,7 @@ const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
           <h4><Icon name="folder" /> 分类</h4>
           {
             CATEGORIES.map((c) => (
-              <button class={`cat-row cat-${c}`} data-cat-btn={c}>
+              <button class={`cat-row cat-${c}`} data-cat-btn={c} aria-pressed="false">
                 <span class="cdot" />
                 {c}
                 <b>{posts.filter((p) => p.data.category === c).length}</b>
@@ -68,7 +68,7 @@ const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
           <div class="tag-cloud">
             {
               topTags.map(([t, n]) => (
-                <button class="chip" data-tag-btn={t}>
+                <button class="chip" data-tag-btn={t} aria-pressed="false">
                   {t} {n}
                 </button>
               ))
@@ -105,8 +105,16 @@ const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
       r.style.display = ok ? "" : "none";
       if (ok) shown++;
     }
-    catBtns.forEach((c) => c.classList.toggle("on", (c.dataset.catBtn ?? "all") === f.cat));
-    tagBtns.forEach((c) => c.classList.toggle("on", !!f.tag && c.dataset.tagBtn === f.tag));
+    catBtns.forEach((c) => {
+      const on = (c.dataset.catBtn ?? "all") === f.cat;
+      c.classList.toggle("on", on);
+      c.setAttribute("aria-pressed", String(on));
+    });
+    tagBtns.forEach((c) => {
+      const on = !!f.tag && c.dataset.tagBtn === f.tag;
+      c.classList.toggle("on", on);
+      c.setAttribute("aria-pressed", String(on));
+    });
     if (tagBar) tagBar.style.display = f.tag ? "" : "none";
     if (clearTag && f.tag) clearTag.textContent = `# ${f.tag} ✕`;
     if (countEl)

@@ -183,7 +183,7 @@ const pinnedCover = pinned ? coverVisual(pinned.id) : null;
         <div class="card reveal">
           {moments.map((m) => (
             <div class="moment-item">
-              <time>{fmtDateTime(m.data.date)}</time>
+              <time datetime={m.data.date.toISOString()}>{fmtDateTime(m.data.date)}</time>
               {m.data.text}
             </div>
           ))}

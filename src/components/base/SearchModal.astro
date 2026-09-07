@@ -138,7 +138,9 @@ import { NAV } from "../../config/site";
     box?.querySelector(".sr-item.sel")?.scrollIntoView({ block: "nearest" });
   }
 
+  let opener: HTMLElement | null = null;
   function open() {
+    opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     mask?.classList.add("open");
     if (input) input.value = "";
     renderPages();
@@ -146,6 +148,8 @@ import { NAV } from "../../config/site";
   }
   function close() {
     mask?.classList.remove("open");
+    // return keyboard focus to where the user opened the modal from
+    opener?.focus();
   }
 
   // searchBtn lives in the header, which is swapped on client-side navigations —
@@ -155,6 +159,23 @@ import { NAV } from "../../config/site";
   });
   mask?.addEventListener("click", (e) => {
     if (e.target === mask) close();
+  });
+  // keep keyboard focus inside the modal (it is declared aria-modal)
+  mask?.addEventListener("keydown", (e) => {
+    if (e.key !== "Tab") return;
+    const focusables = Array.from(
+      mask.querySelectorAll<HTMLElement>("a[href], button, input"),
+    ).filter((el) => el.offsetParent !== null);
+    if (focusables.length < 2) return;
+    const first = focusables[0]!;
+    const last = focusables[focusables.length - 1]!;
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
   });
   input?.addEventListener("input", (e) => void search((e.target as HTMLInputElement).value));
   input?.addEventListener("keydown", (e) => {

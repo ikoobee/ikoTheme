@@ -21,7 +21,7 @@ const moments = await momentsAll();
               <div style="line-height:1.4">
                 <b>{SITE.author.name}</b>
                 <br />
-                <time style="font-size:12px;color:var(--text-3)">{fmtDateTime(m.data.date)}</time>
+                <time datetime={m.data.date.toISOString()} style="font-size:12px;color:var(--text-3)">{fmtDateTime(m.data.date)}</time>
               </div>
             </div>
             <p class="mtext">{m.data.text}</p>

@@ -67,8 +67,10 @@ const ogImage = new URL(image ?? "og-default.png", site);
         },
       })}
     />
-    <!-- set theme before first paint to avoid FOUC -->
-    <script is:inline>
+    <!-- set theme before first paint to avoid FOUC; data-astro-rerun makes the
+         ClientRouter re-run this after every client-side navigation — otherwise
+         the swap strips data-theme off <html> and the site flips back to light -->
+    <script is:inline data-astro-rerun>
       (() => {
         let saved = null;
         try {

@@ -4,6 +4,8 @@ desc: v1.1 的四个新特性是怎么用零依赖、零常驻脚本的方式落
 date: 2026-09-04
 category: Code
 tags: [Astro, ikoTheme, 博客]
+series: ikoTheme 开发日志
+seriesOrder: 2
 ---
 
 v1.0 发布之后，我对着同类主题的功能清单做了一次逐项对比，最后圈出四个「低成本、高感知」的候选：图片灯箱、LaTeX 公式、页面过渡、侧边栏配置化。v1.1 把它们全部落地了，这篇记录一下取舍。

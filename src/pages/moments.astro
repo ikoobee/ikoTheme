@@ -25,6 +25,15 @@ const moments = await momentsAll();
               </div>
             </div>
             <p class="mtext">{m.data.text}</p>
+            {
+              m.data.images.length > 0 && (
+                <div class="moment-imgs">
+                  {m.data.images.map((src) => (
+                    <img src={src} alt="" loading="lazy" decoding="async" />
+                  ))}
+                </div>
+              )
+            }
           </article>
         ))
       }

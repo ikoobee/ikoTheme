@@ -8,6 +8,18 @@ tags: [Astro, Content Collections, TypeScript]
 
 内容集合（Content Collections）是 Astro 最被低估的能力：它让你的 Markdown 不再是「一堆字符串」，而是一组构建期校验过的数据。
 
+整条数据流长这样：
+
+```mermaid
+flowchart LR
+  A["src/content/posts/*.md"] -->|"glob loader"| B["content.config.ts<br/>zod schema"]
+  B -->|"类型安全的条目"| C["getCollection()"]
+  C --> D["页面渲染"]
+  C --> E["RSS / OG 图"]
+  C --> F["Pagefind 索引"]
+```
+
+
 ## 定义集合与 schema
 
 在 `src/content.config.ts` 里用 zod 声明每个集合的形状：

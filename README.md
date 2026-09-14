@@ -62,6 +62,9 @@ npm run check      # astro check (types + content schema)
 - Project pages (`/projects/<slug>`) — posts and projects are both first-class citizens
 - Writing extras rendered at build time: `:::note`-style callouts, code block
   title strips, line numbers, diff/meta highlight, fold for 24+ line blocks
+- Mermaid diagrams (lazy-loaded only on pages that use them), series
+  navigation (`series` frontmatter), TOC scroll-spy, moment images,
+  guestbook page, optional view counter via the comment provider
 - Sitemap with `lastmod`, `robots.txt`, JSON-LD structured data
 - Pluggable comments: giscus / Waline / Twikoo adapters — pick one in
   `src/config/site.ts` (`COMMENTS.provider`), lazy-loaded on scroll, dark-mode synced
@@ -87,7 +90,9 @@ npm run check      # astro check (types + content schema)
       (View Transitions API), configurable sidebar
 - [x] v1.2: project detail pages, callouts, code block chrome, cover images
       via astro:assets, sitemap lastmod + robots.txt, updated display
-- [ ] Next: i18n (zh/en), recent searches, Mermaid, series navigation
+- [x] v1.3 batch (main): Mermaid diagrams, series navigation, view counter,
+      TOC scroll-spy, moment images, guestbook
+- [ ] Next: i18n (zh/en), recent searches
 
 ## License
 

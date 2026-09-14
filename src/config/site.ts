@@ -56,6 +56,7 @@ export const NAV: NavItem[] = [
   { id: "archive", label: "归档", href: "/archive/", icon: "archive" },
   { id: "moments", label: "动态", href: "/moments/", icon: "chat" },
   { id: "links", label: "友链", href: "/links/", icon: "link" },
+  { id: "guestbook", label: "留言板", href: "/guestbook/", icon: "mail" },
   { id: "about", label: "关于", href: "/about/", icon: "user" },
 ];
 
@@ -78,6 +79,8 @@ export type CommentsProvider = "giscus" | "waline" | "twikoo" | "none";
 
 export interface CommentsConfig {
   provider: CommentsProvider;
+  /** view counter in article meta (Waline: pageviews, Twikoo: comment counts) */
+  views: boolean;
   /** giscus: powered by GitHub Discussions — get repoId/categoryId at https://giscus.app */
   giscus: { repo: string; repoId: string; category: string; categoryId: string };
   /** waline: self-hosted serverless — https://waline.js.org */
@@ -88,6 +91,7 @@ export interface CommentsConfig {
 
 export const COMMENTS: CommentsConfig = {
   provider: "none", // switch to "giscus" | "waline" | "twikoo" to enable
+  views: true, // view counter in article meta (waline/twikoo only)
   giscus: {
     repo: "ikoobee/ikoTheme", // TODO: your public repo with Discussions enabled
     repoId: "", // TODO: fill from giscus.app

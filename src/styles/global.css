@@ -655,3 +655,41 @@ kbd { font-size: 11px; color: var(--text-3); border: 1px solid var(--border); bo
 .proj-detail-desc { color: var(--text-2); margin: 16px 0 12px; font-size: 15px; }
 .proj-detail-top .tech-chips { margin-bottom: 16px; }
 .proj-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 26px; }
+
+/* ===== v1.3 P1: series box, toc spy, mermaid, moment images, views ===== */
+.series-box { margin: 26px 0; padding: 14px 18px; border-radius: 12px;
+  border: 1px dashed var(--border-2); background: var(--card); }
+.series-head { display: flex; align-items: center; gap: 8px; font-weight: 700;
+  font-size: 14px; margin-bottom: 10px; }
+.series-head .ic { color: var(--brand); }
+.series-pos { margin-left: auto; font-size: 12px; color: var(--text-3); font-weight: 500; }
+.series-box ol { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.series-box li { font-size: 13.5px; color: var(--text-2); display: flex; gap: 8px; align-items: baseline; }
+.series-box li::before { content: counter(sq) "."; counter-increment: sq; color: var(--text-3);
+  font-size: 12px; min-width: 1.6em; }
+.series-box ol { counter-reset: sq; }
+.series-box li a { border-bottom: 1px dashed transparent; }
+.series-box li a:hover { color: var(--brand); border-bottom-color: var(--brand); }
+.series-box li.cur { color: var(--text); font-weight: 600; }
+.series-box li.cur::before { color: var(--brand); font-weight: 700; }
+
+/* toc scroll-spy highlight */
+.toc a.on { color: var(--brand); font-weight: 600; border-left-color: var(--brand); }
+
+/* mermaid diagrams */
+.mermaid-box { margin: 1.4em 0; padding: 18px; text-align: center; border-radius: 12px;
+  background: var(--card); border: 1px solid var(--border); overflow-x: auto; }
+.mermaid-box svg { max-width: 100%; height: auto; }
+.mermaid-fail { color: var(--text-3); font-size: 13px; }
+
+/* moment images */
+.moment-imgs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.moment-imgs img { width: 128px; height: 96px; object-fit: cover; border-radius: 8px;
+  cursor: zoom-in; border: 1px solid var(--border); }
+
+/* view counter (fills async) */
+.article-meta .meta-views { min-width: 4.5em; }
+.article-meta .meta-views i { font-style: normal; }
+
+/* guestbook */
+.guestbook-box { padding: 22px 24px; }

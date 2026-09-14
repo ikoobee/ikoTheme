@@ -5,6 +5,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Icon from "../../components/base/Icon.astro";
 import Comments from "../../components/comments/Comments.astro";
 import DonateDialog from "../../components/base/DonateDialog.astro";
+import ViewCount from "../../components/base/ViewCount.astro";
 import { SITE, DONATE } from "../../config/site";
 import {
   postsByDate,
@@ -12,6 +13,7 @@ import {
   wordCount,
   fmtDate,
   relatedOf,
+  seriesOf,
   tocFrom,
   coverVisual,
   type Post,
@@ -35,6 +37,7 @@ const { post, prev, next } = Astro.props;
 const { Content } = await render(post);
 const toc = tocFrom(post.body ?? "");
 const related = relatedOf(post, await postsByDate());
+const series = seriesOf(post, await postsByDate());
 const cover = coverVisual(post.id);
 ---
 
@@ -75,6 +78,7 @@ const cover = coverVisual(post.id);
                 </span>
               )
             }
+            <ViewCount />
           </div>
         </div>
 
@@ -89,6 +93,30 @@ const cover = coverVisual(post.id);
         <div class="prose">
           <Content />
         </div>
+
+        {
+          series && series.items.length > 1 && (
+            <nav class="series-box" aria-label={`系列：${series.name}`}>
+              <div class="series-head">
+                <Icon name="folder" /> 系列：{series.name}
+                <span class="series-pos">
+                  {series.index + 1} / {series.items.length}
+                </span>
+              </div>
+              <ol>
+                {series.items.map((it, i) => (
+                  <li class={i === series.index ? "cur" : ""}>
+                    {i === series.index ? (
+                      <span>{it.data.title}</span>
+                    ) : (
+                      <a href={`/posts/${it.id}/`}>{it.data.title}</a>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )
+        }
 
         <div class="article-tail">
           <div class="article-tags">
@@ -175,4 +203,36 @@ const cover = coverVisual(post.id);
   </div>
 </BaseLayout>
 <!-- reading progress bar is driven by the shared scroll handler in BaseLayout -->
+
+<script>
+  // TOC scroll-spy: highlight the heading closest to the viewport top
+  document.addEventListener("astro:page-load", () => {
+    const toc = document.querySelector<HTMLElement>(".toc");
+    if (!toc) return;
+    const links = Array.from(toc.querySelectorAll<HTMLAnchorElement>("a[href^='#']"));
+    if (!links.length) return;
+    const headings = links
+      .map((l) => document.getElementById(decodeURIComponent(l.hash.slice(1))))
+      .filter((h): h is HTMLElement => !!h);
+
+    const setActive = (id: string) =>
+      links.forEach((l) =>
+        l.classList.toggle("on", decodeURIComponent(l.hash.slice(1)) === id),
+      );
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) setActive((e.target as HTMLElement).id);
+        }
+      },
+      // a heading counts as active while it sits in the upper band of the page
+      { rootMargin: "-80px 0px -70% 0px" },
+    );
+    headings.forEach((h) => io.observe(h));
+
+    // initial state before any intersection fires
+    if (headings[0]) setActive(headings[0].id);
+  });
+</script>
 

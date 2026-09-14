@@ -131,3 +131,13 @@ function hash(s: string): number {
 export function coverVisual(key: string): { g: string; glyph: string } {
   return { g: COVER_GRADIENTS[hash(key) % COVER_GRADIENTS.length], glyph: key.slice(0, 1).toUpperCase() };
 }
+
+/** series navigation: posts sharing `series`, ordered by seriesOrder ?? date */
+export function seriesOf(p: Post, all: Post[]): { name: string; items: Post[]; index: number } | null {
+  const name = p.data.series;
+  if (!name) return null;
+  const items = all
+    .filter((x) => x.data.series === name)
+    .sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0) || +a.data.date - +b.data.date);
+  return { name, items, index: items.findIndex((x) => x.id === p.id) };
+}

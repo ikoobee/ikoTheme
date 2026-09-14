@@ -278,6 +278,13 @@ const pinnedCover = pinned ? coverVisual(pinned.id) : null;
             <div class="moment-item">
               <time datetime={m.data.date.toISOString()}>{fmtDateTime(m.data.date)}</time>
               {m.data.text}
+              {m.data.images.length > 0 && (
+                <div class="moment-imgs">
+                  {m.data.images.map((src) => (
+                    <img src={src} alt="" loading="lazy" decoding="async" />
+                  ))}
+                </div>
+              )}
             </div>
           ))}
           <a class="card-more" href="/moments/">过去的事，都在动态里 →</a>

@@ -5,6 +5,8 @@ date: 2026-09-02
 category: Code
 tags: [Astro, ikoTheme, 博客]
 pinned: true
+series: ikoTheme 开发日志
+seriesOrder: 1
 cover: ./cover-log-0.jpg
 updated: 2026-09-04
 ---

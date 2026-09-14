@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Comments from "../components/comments/Comments.astro";
+import { COMMENTS } from "../config/site";
+---
+
+<BaseLayout title="留言板" description="说点什么吧 —— 问题和建议都在这里">
+  <div class="view-pad container">
+    <div class="page-head">
+      <h1>留言板 <span class="grad-text">Guestbook</span></h1>
+      <p>逛到这里，留句话再走？问题、建议、闲聊都行</p>
+    </div>
+
+    {
+      COMMENTS.provider === "none" ? (
+        <div class="card" style="padding:40px;text-align:center;color:var(--text-3)">
+          留言板依赖评论系统：在
+          <code>src/config/site.ts</code> 的 <code>COMMENTS.provider</code> 选择
+          giscus / Waline / Twikoo 并补全配置后，这里会出现评论区
+          （启用指南见 <a href="https://github.com/ikoobee/ikoTheme/blob/main/docs/comments.md">docs/comments.md</a>）。
+        </div>
+      ) : (
+        <div class="card guestbook-box">
+          <Comments />
+        </div>
+      )
+    }
+  </div>
+</BaseLayout>

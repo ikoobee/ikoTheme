@@ -1,0 +1,84 @@
+---
+/**
+ * Page view counter — reuses the active comment provider's backend:
+ *  - waline: real pageview counts (Waline pageview API)
+ *  - twikoo: comment counts as engagement metric (Twikoo has no view API)
+ *  - giscus / none: not rendered (giscus exposes no public count API)
+ * Enable/disable via COMMENTS.views in src/config/site.ts.
+ */
+import { COMMENTS } from "../../config/site";
+import Icon from "./Icon.astro";
+
+const provider = COMMENTS.provider;
+const supported = provider === "waline" || provider === "twikoo";
+const cfg =
+  provider === "waline" ? COMMENTS.waline.serverURL : provider === "twikoo" ? COMMENTS.twikoo.envId : "";
+---
+
+{
+  supported && COMMENTS.views && cfg && (
+    <span
+      class="meta-views"
+      data-views-provider={provider}
+      data-views-cfg={cfg}
+      aria-label="阅读量"
+    >
+      <Icon name="eye" /> <i data-count>—</i>
+    </span>
+  )
+}
+
+<script>
+  // fills the counter when a supported provider is configured; re-inits
+  // after each client-side navigation
+  document.addEventListener("astro:page-load", () => {
+    const el = document.querySelector<HTMLElement>("[data-views-provider]");
+    if (!el) return;
+    const provider = el.dataset.viewsProvider;
+    const cfg = el.dataset.viewsCfg ?? "";
+    const path = location.pathname;
+    const out = el.querySelector("[data-count]");
+    if (!out) return;
+
+    const loadScript = (src: string) =>
+      new Promise<void>((res, rej) => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.async = true;
+        s.onload = () => res();
+        s.onerror = () => rej(new Error(`load fail: ${src}`));
+        document.head.appendChild(s);
+      });
+
+    if (provider === "waline") {
+      void loadScript("https://unpkg.com/@waline/client@v3/dist/waline.js")
+        .then(() => {
+          const W = (window as unknown as {
+            Waline?: {
+              pageview: {
+                count: (o: Record<string, string>) => Promise<number>;
+              };
+            };
+          }).Waline;
+          return W?.pageview.count({ serverURL: cfg, path });
+        })
+        .then((n) => {
+          if (typeof n === "number") out.textContent = `${n} 次阅读`;
+        })
+        .catch(() => (out.textContent = ""));
+    } else if (provider === "twikoo") {
+      void loadScript("https://cdn.jsdelivr.net/npm/twikoo@1/dist/twikoo.all.min.js")
+        .then(async () => {
+          const tk = (window as unknown as {
+            twikoo?: {
+              getCommentsCount: (o: Record<string, unknown>) => Promise<{ count: number }[]>;
+            };
+          }).twikoo;
+          const res = await tk?.getCommentsCount({ envId: cfg, paths: [path] });
+          const n = res?.[0]?.count;
+          out.textContent = typeof n === "number" ? `${n} 条评论` : "";
+        })
+        .catch(() => (out.textContent = ""));
+    }
+  });
+</script>

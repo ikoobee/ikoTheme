@@ -130,9 +130,9 @@ const ogImage = new URL(image ?? "og-default.png", site);
           scrollTo({ top: 0, behavior: "smooth" });
           return;
         }
-        // lightbox: clicking an article image opens the shared <dialog>
+        // lightbox: clicking an article/moment image opens the shared <dialog>
         const img = t.closest("img");
-        if (img?.closest(".prose")) {
+        if (img?.closest(".prose, .moment-imgs")) {
           const dlg = document.getElementById("lightbox") as HTMLDialogElement | null;
           const big = document.getElementById("lightboxImg") as HTMLImageElement | null;
           if (dlg && big) {
@@ -181,8 +181,9 @@ const ogImage = new URL(image ?? "og-default.png", site);
       // ---- per-page setup (runs on first load and after every client-side nav) --
       const onPageLoad = () => {
         // code block copy button (client-side enhancement over shiki output)
-        document.querySelectorAll("pre.astro-code").forEach((pre) => {
+        document.querySelectorAll<HTMLElement>("pre.astro-code").forEach((pre) => {
           if (pre.parentElement?.classList.contains("code-wrap")) return;
+          if (pre.dataset.language === "mermaid") return; // diagrams, not code
           const parent = pre.parentNode;
           if (!parent) return;
           const wrap = document.createElement("div");
@@ -230,6 +231,47 @@ const ogImage = new URL(image ?? "og-default.png", site);
           { threshold: 0.06 },
         );
         document.querySelectorAll(".reveal:not(.on)").forEach((el) => io.observe(el));
+
+        // mermaid: swap ```mermaid code blocks for rendered diagrams; the
+        // ESM bundle only loads when a diagram scrolls near the viewport
+        const mermaidPres = Array.from(
+          document.querySelectorAll<HTMLElement>("pre[data-language='mermaid']"),
+        );
+        if (mermaidPres.length) {
+          const render = async () => {
+            const { default: mermaid } = await import("mermaid");
+            const dark = document.documentElement.dataset.theme === "dark";
+            mermaid.initialize({
+              startOnLoad: false,
+              theme: dark ? "dark" : "default",
+              fontFamily: "inherit",
+            });
+            for (const pre of mermaidPres) {
+              if (pre.dataset.done) continue;
+              pre.dataset.done = "1";
+              const box = document.createElement("div");
+              box.className = "mermaid-box";
+              try {
+                const { svg } = await mermaid.render(
+                  `mmd-${crypto.randomUUID()}`,
+                  pre.textContent ?? "",
+                );
+                box.innerHTML = svg;
+              } catch {
+                box.className = "mermaid-box mermaid-fail";
+                box.textContent = "图表渲染失败";
+              }
+              pre.replaceWith(box);
+            }
+          };
+          const mio = new IntersectionObserver((entries, obs) => {
+            if (entries.some((e) => e.isIntersecting)) {
+              obs.disconnect();
+              void render();
+            }
+          });
+          mermaidPres.forEach((p) => mio.observe(p));
+        }
       };
       document.addEventListener("astro:page-load", onPageLoad);
     </script>

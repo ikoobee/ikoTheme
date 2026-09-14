@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Mermaid diagrams: ` ```mermaid ` code blocks render client-side, lazy —
+  the ESM bundle (~600KB) only loads when a diagram nears the viewport and
+  only on pages containing one; theme-aware (dark/default)
+- Series navigation: `series` + `seriesOrder` frontmatter renders an
+  in-article series box with numbered entries
+- View counter in article meta, reusing the comment provider's backend
+  (Waline pageviews / Twikoo comment counts; hidden for giscus/none;
+  `COMMENTS.views` toggle)
+- TOC scroll-spy: current section highlighted while reading
+- Moment images: `images` frontmatter on moments renders a grid, hooked
+  into the lightbox
+- Guestbook page (`/guestbook`) reusing the comment adapters, with a nav
+  entry and a setup hint when comments are disabled
+
 ## [1.2.0] - 2026-09-14
 
 ### Added

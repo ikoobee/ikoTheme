@@ -13,6 +13,9 @@ const posts = defineCollection({
       category: z.enum(CATEGORIES),
       tags: z.array(z.string()).default([]),
       cover: image().optional(),
+      /** series / column this post belongs to (with 1-based seriesOrder) */
+      series: z.string().optional(),
+      seriesOrder: z.number().optional(),
       pinned: z.boolean().default(false),
       draft: z.boolean().default(false),
     }),
@@ -38,6 +41,8 @@ const moments = defineCollection({
   schema: z.object({
     text: z.string().max(300),
     date: z.coerce.date(),
+    /** optional images (paths under public/) shown as a grid */
+    images: z.array(z.string()).default([]),
   }),
 });
 

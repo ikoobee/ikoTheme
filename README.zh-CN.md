@@ -38,9 +38,13 @@ npm run dev        # http://localhost:4321
 
 写作增强（全部构建期渲染，零客户端 JS）：`:::note` / `:::tip` / `:::warning` /
 `:::danger` 告示块；代码块 `` ```js title="x.ts" {1,3-4} `` 文件名栏、行号、
-`[!code ++]` / `[!code --]` 增删高亮，超过 24 行自动折叠；文章封面图把
+`[!code ++]` / `[!code --]` 增删高亮，超过 24 行自动折叠；`` ```mermaid ``
+图表按需懒加载（仅含图页面加载，明暗主题自适应）；文章封面图把
 `cover: ./cover.jpg` 写进 frontmatter（图片与 md 同目录，构建期出 srcset/webp，
-无图自动回退渐变占位）；`updated: 2026-09-04` 可选字段展示「最后更新于」。
+无图自动回退渐变占位）；`series` + `seriesOrder` 组织系列文章（文中导航盒）；
+`updated: 2026-09-04` 可选字段展示「最后更新于」；动态支持 `images` 配图。
+阅读时：目录滚动高亮、阅读量（复用 Waline/Twikoo，`COMMENTS.views` 开关）、
+留言板页（`/guestbook`，依赖评论已启用）。
 
 站点身份（名称、作者、导航、签名档、首页侧边栏板块……）统一在
 [`src/config/site.ts`](src/config/site.ts) 一处配置（侧边栏由 `SIDEBAR` 数组

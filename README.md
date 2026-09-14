@@ -16,10 +16,11 @@ transitions — all static, all fast.
 
 ## Status
 
-✅ **v1.1 released** — v1.0 (layout, collections, search, comments, RSS,
-per-post OG images, a11y pass, Lighthouse CI gate) plus image lightbox,
-LaTeX math, page transitions, and a configurable sidebar. See the
-[roadmap](#roadmap) for what's next.
+✅ **v1.2 released** — v1.0 (layout, collections, search, comments, RSS,
+per-post OG images, a11y pass, Lighthouse CI gate), v1.1 (lightbox, LaTeX,
+page transitions, configurable sidebar), v1.2 (project detail pages, callouts,
+code block chrome, cover images via astro:assets, sitemap lastmod + robots.txt).
+See the [roadmap](#roadmap) for what's next.
 
 ## Quick Start
 
@@ -84,8 +85,8 @@ npm run check      # astro check (types + content schema)
 - [x] v1.0 release + template usage (`npm create astro@latest -- --template ikoobee/ikoTheme`)
 - [x] v1.1 features: image lightbox, LaTeX math (KaTeX), page transitions
       (View Transitions API), configurable sidebar
-- [x] v1.2 batch (main): project detail pages, callouts, code block chrome,
-      cover images via astro:assets, sitemap lastmod + robots.txt
+- [x] v1.2: project detail pages, callouts, code block chrome, cover images
+      via astro:assets, sitemap lastmod + robots.txt, updated display
 - [ ] Next: i18n (zh/en), recent searches, Mermaid, series navigation
 
 ## License

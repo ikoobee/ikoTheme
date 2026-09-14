@@ -13,7 +13,7 @@ English documentation: [README.md](README.md)
 暗色模式、归档时间线、阅读增强、图片灯箱、KaTeX 数学公式、页面过渡、
 告示块与代码块增强，全静态、零默认客户端 JS。
 
-> ✅ **v1.1 已发布**——v1.0 全部能力（布局、内容集合、全文搜索、评论适配、RSS、每篇文章动态分享图、无障碍走查、Lighthouse CI 门禁）之上，新增图片灯箱、KaTeX 数学公式、页面过渡与侧边栏配置化，进度以 [README.md](README.md#roadmap) 的 Roadmap 为准。
+> ✅ **v1.2 已发布**——在 v1.0（布局、内容集合、全文搜索、评论适配、RSS、动态分享图、无障碍走查、Lighthouse 门禁）与 v1.1（灯箱、KaTeX、页面过渡、侧边栏配置化）之上，新增项目详情页、告示块、代码块增强、封面图管线与 sitemap/robots 收尾，进度以 [README.md](README.md#roadmap) 的 Roadmap 为准。
 
 ## 快速开始
 

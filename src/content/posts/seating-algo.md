@@ -12,7 +12,7 @@ tags: [算法, JavaScript, classroom-seating]
 
 寻优算法的第一步不是选算法，而是定义「好」。我们把老师的直觉拆成可计算的规则，每条规则一个权重：
 
-```js
+```js title="score.js" {3,6}
 function score(seats, rules) {
   let total = 0;
   for (const [a, b, w] of rules.pairs) {
@@ -32,7 +32,20 @@ $$
 P(\text{accept}) = \exp\left(-\frac{\Delta E}{T}\right)
 $$
 
+落到代码里，接受函数只要几行——关键是第二行那个概率分支，爬山法就是少了它：
+
+```js title="accept.js"
+function accept(delta, T) {
+  if (delta >= 0) return true;
+  return Math.random() < Math.exp(-delta / T); // [!code ++]
+}
+```
+
 温度按几何日程衰减：$T_{k+1} = \alpha T_k$，本项目取 $\alpha = 0.95$、初始 $T_0 = 100$。同样是 3 秒预算，爬山法平均分 82，模拟退火 91，且方差明显更小。
+
+:::tip
+权重调参没有公式可循，实践中最快的办法是让老师对三个备选方案盲选——选不出来的那组权重，就是对的。
+:::
 
 ## 工程上的取舍
 
@@ -42,4 +55,13 @@ $$
 | 数据存储 | localStorage | 换设备需导出导入 |
 | 可视化 | Canvas 逐帧重绘 | 代码量更多 |
 
+:::warning
+模拟退火不是「更优」而是「更不容易卡在局部最优」：如果规则本身互相矛盾（既要全班分开又要指定同桌），任何算法都救不回来。
+:::
+
 上线一学期后，朋友的反馈是：「它给出的方案不总是我心里的最优，但从来不会离谱。」——对算法工程来说，这就是好评。
+
+
+
+
+

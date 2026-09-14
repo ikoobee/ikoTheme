@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import Icon from "../base/Icon.astro";
 import { readingTime, fmtDate, coverVisual, type Post } from "../../utils/content";
 
@@ -17,12 +18,18 @@ const cover = coverVisual(post.id);
 >
   <a
     class="thumb"
-    style={`background:${cover.g}`}
-    data-glyph={cover.glyph}
+    style={post.data.cover ? undefined : `background:${cover.g}`}
+    data-glyph={post.data.cover ? undefined : cover.glyph}
     href={`/posts/${post.id}/`}
     aria-label={post.data.title}
   >
-    {cover.glyph}
+    {
+      post.data.cover ? (
+        <Image src={post.data.cover} alt={post.data.title} widths={[360, 720]} sizes="172px" />
+      ) : (
+        cover.glyph
+      )
+    }
   </a>
   <div style="min-width:0;flex:1">
     <div class="meta-line">

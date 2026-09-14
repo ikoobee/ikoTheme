@@ -50,6 +50,7 @@ const ogImage = new URL(image ?? "og-default.png", site);
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={pageTitle} />
     <script
+      is:inline
       type="application/ld+json"
       set:html={JSON.stringify({
         "@context": "https://schema.org",
@@ -202,6 +203,18 @@ const ogImage = new URL(image ?? "og-default.png", site);
             setTimeout(() => (btn.textContent = "复制"), 1600);
           });
           wrap.appendChild(btn);
+
+          // fold long code blocks (>24 lines) into a <details>
+          const lines = pre.querySelectorAll(".line").length;
+          if (lines > 24 && wrap.parentNode) {
+            const det = document.createElement("details");
+            det.className = "code-fold";
+            const sum = document.createElement("summary");
+            sum.textContent = `展开 ${lines} 行代码`;
+            wrap.parentNode.insertBefore(det, wrap);
+            det.appendChild(sum);
+            det.appendChild(wrap);
+          }
         });
 
         // reveal on scroll

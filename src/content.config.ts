@@ -4,17 +4,18 @@ import { CATEGORIES } from "./config/site";
 
 const posts = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/posts" }),
-  schema: z.object({
-    title: z.string(),
-    desc: z.string().max(160),
-    date: z.coerce.date(),
-    updated: z.coerce.date().optional(),
-    category: z.enum(CATEGORIES),
-    tags: z.array(z.string()).default([]),
-    cover: z.string().optional(),
-    pinned: z.boolean().default(false),
-    draft: z.boolean().default(false),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      desc: z.string().max(160),
+      date: z.coerce.date(),
+      updated: z.coerce.date().optional(),
+      category: z.enum(CATEGORIES),
+      tags: z.array(z.string()).default([]),
+      cover: image().optional(),
+      pinned: z.boolean().default(false),
+      draft: z.boolean().default(false),
+    }),
 });
 
 const projects = defineCollection({

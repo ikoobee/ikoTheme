@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Project detail pages (`/projects/<slug>`) — markdown bodies, status/meta
+  header, repo & demo actions, prev/next navigation; project cards now link
+  to the detail page (dual first-class citizens completed)
+- GitHub-style callouts (`:::note` / `:::tip` / `:::warning` / `:::danger`)
+  via remark-directive, rendered at build time
+- Code block enhancements: `title="file.ts"` filename strip, line numbers
+  (CSS counters), `[!code ++]`/`[!code --]` diff and `{1,3-4}` meta
+  highlighting, zero-JS folding of 24+ line blocks
+- Post cover images via `astro:assets` (`cover` frontmatter colocated with
+  the post; srcset + webp at build time, gradient fallback preserved)
+- Sitemap `lastmod` from content dates (`updated ?? date`) and `robots.txt`
+  with a `Sitemap:` line
+- "Last updated" display in article meta and license block (`updated`
+  frontmatter)
+- Dark-mode image dimming in article bodies
 - SEO & a11y polish: JSON-LD structured data (`WebSite` site-wide,
   `BlogPosting` on articles), `og:image` width/height/alt meta,
   `aria-current` on active nav items, `aria-pressed` on filter chips,

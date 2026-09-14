@@ -13,9 +13,9 @@ const p = project.data;
 
 <article class="card proj-card reveal" data-status={p.status}>
   <div class="top">
-    <div class="logo" style={`background:${logo.g}`}>{logo.glyph}</div>
+    <a class="logo" style={`background:${logo.g}`} href={`/projects/${project.id}/`} aria-label={p.name}>{logo.glyph}</a>
     <h3>
-      <span class="pname" title={p.name}>{p.name}</span>
+      <a href={`/projects/${project.id}/`} title={p.name}><span class="pname">{p.name}</span></a>
       <span class={`badge st-${p.status}`}>{STATUS_LABEL[p.status]}</span>
     </h3>
   </div>

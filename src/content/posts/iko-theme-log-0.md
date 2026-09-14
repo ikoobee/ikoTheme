@@ -5,6 +5,8 @@ date: 2026-09-02
 category: Code
 tags: [Astro, ikoTheme, 博客]
 pinned: true
+cover: ./cover-log-0.jpg
+updated: 2026-09-04
 ---
 
 用 vhAstro 二开了大半年，我终于决定亲手写一套属于自己的 Astro 主题。这不是一时冲动——当第三次解决「上游更新与本地魔改的合并冲突」时，我就知道该换个思路了。

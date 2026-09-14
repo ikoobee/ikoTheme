@@ -9,8 +9,9 @@
 English documentation: [README.md](README.md)
 
 为独立开发者与开源作者打造：用一个干净的首页同时展示作品与写作——主内容流
-（精选 → 最新文章 → 开源项目 → 动态）+ 右侧伴随栏，暗色模式、归档时间线、
-阅读增强、图片灯箱、KaTeX 数学公式、页面过渡，全静态、零默认客户端 JS。
+（精选 → 最新文章 → 开源项目 → 动态）+ 右侧伴随栏，文章与项目都有独立详情页，
+暗色模式、归档时间线、阅读增强、图片灯箱、KaTeX 数学公式、页面过渡、
+告示块与代码块增强，全静态、零默认客户端 JS。
 
 > ✅ **v1.1 已发布**——v1.0 全部能力（布局、内容集合、全文搜索、评论适配、RSS、每篇文章动态分享图、无障碍走查、Lighthouse CI 门禁）之上，新增图片灯箱、KaTeX 数学公式、页面过渡与侧边栏配置化，进度以 [README.md](README.md#roadmap) 的 Roadmap 为准。
 
@@ -31,9 +32,15 @@ npm run dev        # http://localhost:4321
 | 集合 | 路径 | 驱动页面 |
 |---|---|---|
 | `posts` | `src/content/posts/*.md` | 博客文章（`/posts/<slug>`） |
-| `projects` | `src/content/projects/*.md` | 项目展示（`/projects`） |
+| `projects` | `src/content/projects/*.md` | 项目展示 + 详情页（`/projects/<slug>`） |
 | `moments` | `src/content/moments/*.md` | 短动态（`/moments`） |
 | `friends` | `src/content/friends/*.md` | 友链（`/links`） |
+
+写作增强（全部构建期渲染，零客户端 JS）：`:::note` / `:::tip` / `:::warning` /
+`:::danger` 告示块；代码块 `` ```js title="x.ts" {1,3-4} `` 文件名栏、行号、
+`[!code ++]` / `[!code --]` 增删高亮，超过 24 行自动折叠；文章封面图把
+`cover: ./cover.jpg` 写进 frontmatter（图片与 md 同目录，构建期出 srcset/webp，
+无图自动回退渐变占位）；`updated: 2026-09-04` 可选字段展示「最后更新于」。
 
 站点身份（名称、作者、导航、签名档、首页侧边栏板块……）统一在
 [`src/config/site.ts`](src/config/site.ts) 一处配置（侧边栏由 `SIDEBAR` 数组

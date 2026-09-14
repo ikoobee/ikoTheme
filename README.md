@@ -56,7 +56,12 @@ npm run check      # astro check (types + content schema)
 - Light/dark theme: system-aware, remembered, no flash on load
 - Posts + projects as separate, schema-validated content collections
 - Article page: auto TOC, reading time, word count, prev/next, related posts, license block,
-  opt-in donation dialog (bring your own QR images)
+  opt-in donation dialog (bring your own QR images), optional cover images
+  (`cover` frontmatter, processed by `astro:assets` with a gradient fallback)
+- Project pages (`/projects/<slug>`) — posts and projects are both first-class citizens
+- Writing extras rendered at build time: `:::note`-style callouts, code block
+  title strips, line numbers, diff/meta highlight, fold for 24+ line blocks
+- Sitemap with `lastmod`, `robots.txt`, JSON-LD structured data
 - Pluggable comments: giscus / Waline / Twikoo adapters — pick one in
   `src/config/site.ts` (`COMMENTS.provider`), lazy-loaded on scroll, dark-mode synced
   (setup guide: [docs/comments.md](docs/comments.md))
@@ -79,7 +84,9 @@ npm run check      # astro check (types + content schema)
 - [x] v1.0 release + template usage (`npm create astro@latest -- --template ikoobee/ikoTheme`)
 - [x] v1.1 features: image lightbox, LaTeX math (KaTeX), page transitions
       (View Transitions API), configurable sidebar
-- [ ] Next: i18n (zh/en), recent searches
+- [x] v1.2 batch (main): project detail pages, callouts, code block chrome,
+      cover images via astro:assets, sitemap lastmod + robots.txt
+- [ ] Next: i18n (zh/en), recent searches, Mermaid, series navigation
 
 ## License
 

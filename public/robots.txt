@@ -1,0 +1,7 @@
+# robots.txt for ikoTheme
+# TODO: replace example.com with your real domain (must match astro.config.mjs `site`)
+
+User-agent: *
+Allow: /
+
+Sitemap: https://example.com/sitemap-index.xml

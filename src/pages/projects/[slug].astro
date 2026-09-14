@@ -1,0 +1,89 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Icon from "../../components/base/Icon.astro";
+import { STATUS_LABEL } from "../../config/site";
+import { projectsAll, coverVisual, fmtDate, type Project } from "../../utils/content";
+
+export async function getStaticPaths() {
+  const projects = await projectsAll();
+  return projects.map((p, i) => ({
+    params: { slug: p.id },
+    props: { project: p, prev: projects[i + 1] ?? null, next: projects[i - 1] ?? null },
+  }));
+}
+
+interface Props {
+  project: Project;
+  prev: Project | null;
+  next: Project | null;
+}
+const { project, prev, next } = Astro.props;
+const { Content } = await render(project);
+const p = project.data;
+const logo = coverVisual(p.name);
+---
+
+<BaseLayout title={p.name} description={p.desc}>
+  <div class="view-pad container">
+    <div class="article-layout">
+      <article>
+        <div class="article-head">
+          <div class="proj-detail-top">
+            <div class="logo" style={`background:${logo.g}`}>{logo.glyph}</div>
+            <div style="min-width:0">
+              <h1>{p.name}</h1>
+              <div class="article-meta">
+                <span class={`badge st-${p.status}`}>{STATUS_LABEL[p.status]}</span>
+                <time datetime={p.date.toISOString().slice(0, 10)}><Icon name="calendar" /> {fmtDate(p.date)}</time>
+                <span><Icon name="zap" /> {p.license}</span>
+              </div>
+            </div>
+          </div>
+          <p class="proj-detail-desc">{p.desc}</p>
+          <div class="tech-chips">{p.tech.map((t) => <span>{t}</span>)}</div>
+          <div class="proj-actions">
+            {p.repo && <a class="btn btn-primary" href={p.repo} target="_blank" rel="noopener"><Icon name="github" /> 源码仓库</a>}
+            {p.demo && <a class="btn btn-ghost" href={p.demo} target="_blank" rel="noopener"><Icon name="link" /> 在线演示</a>}
+            <a class="btn btn-ghost" href="/projects/"><Icon name="left" /> 全部项目</a>
+          </div>
+        </div>
+
+        <div class="prose">
+          <Content />
+        </div>
+
+        <div class="article-tail">
+          <div class="prev-next">
+            {
+              prev ? (
+                <a class="pn-card" href={`/projects/${prev.id}/`}>
+                  <small><Icon name="left" /> 上一个（更早）</small>
+                  <b title={prev.data.name}>{prev.data.name}</b>
+                </a>
+              ) : (
+                <div class="pn-card" style="opacity:.4">
+                  <small>上一个</small>
+                  <b>已经是最早一个了</b>
+                </div>
+              )
+            }
+            {
+              next ? (
+                <a class="pn-card next" href={`/projects/${next.id}/`}>
+                  <small>下一个（更新） <Icon name="right" /></small>
+                  <b title={next.data.name}>{next.data.name}</b>
+                </a>
+              ) : (
+                <div class="pn-card next" style="opacity:.4">
+                  <small>下一个</small>
+                  <b>已是最新一个了</b>
+                </div>
+              )
+            }
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import Icon from "../base/Icon.astro";
 import { fmtDate, readingTime, coverVisual, type Post } from "../../utils/content";
 
@@ -10,8 +11,15 @@ const cover = coverVisual(post.id);
 ---
 
 <article class="card clickable post-card reveal">
-  <a href={`/posts/${post.id}/`} class="cover" style={`background:${cover.g}`} data-glyph={cover.glyph} aria-label={post.data.title}>
-    {cover.glyph}{post.data.pinned && <span class="ribbon">置顶</span>}
+  <a href={`/posts/${post.id}/`} class="cover" style={post.data.cover ? undefined : `background:${cover.g}`} data-glyph={post.data.cover ? undefined : cover.glyph} aria-label={post.data.title}>
+    {
+      post.data.cover ? (
+        <Image src={post.data.cover} alt={post.data.title} widths={[480, 960]} sizes="(max-width: 860px) 100vw, 440px" />
+      ) : (
+        cover.glyph
+      )
+    }
+    {post.data.pinned && <span class="ribbon">置顶</span>}
   </a>
   <div class="body">
     <div class="meta-line">

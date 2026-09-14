@@ -587,3 +587,71 @@ kbd { font-size: 11px; color: var(--text-3); border: 1px solid var(--border); bo
 }
 /* KaTeX: horizontal scroll for wide display math on small screens */
 .katex-display { overflow-x: auto; padding: 2px 0; }
+
+/* ===== v1.2 P0: callouts, code chrome, covers, dark-mode images ===== */
+/* callouts (build-time, :::note containers) */
+.callout { --c: #3b82f6; margin: 1.2em 0; padding: 12px 16px; border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--c) 32%, transparent);
+  border-left: 4px solid color-mix(in srgb, var(--c) 62%, transparent);
+  background: color-mix(in srgb, var(--c) 7%, var(--card)); }
+.callout-tip { --c: #10b981; }
+.callout-warning { --c: #f59e0b; }
+.callout-danger { --c: #ef4444; }
+.callout .callout-title { margin: 0 0 6px; font-weight: 700; font-size: 13.5px;
+  color: color-mix(in srgb, var(--c) 68%, var(--text)); }
+.callout p:last-child { margin-bottom: 0; }
+
+/* code block chrome (title strip via data-title, CSS counters, JS fold) */
+.astro-code[data-title] { position: relative; padding-top: 40px; }
+.astro-code[data-title]::before {
+  content: attr(data-title);
+  position: absolute; top: 0; left: 0; right: 0;
+  padding: 8px 18px; font-size: 12.5px; font-family: ui-monospace, monospace;
+  color: var(--text-2); background: color-mix(in srgb, var(--brand) 5%, var(--card));
+  border-bottom: 1px solid var(--border); border-radius: 13px 13px 0 0; }
+.astro-code[data-title]::after {
+  content: attr(data-lang);
+  position: absolute; top: 6.5px; right: 56px;
+  text-transform: uppercase; letter-spacing: 0.4px; font-size: 10px;
+  padding: 2px 8px; border-radius: 99px; color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 14%, transparent); }
+.code-wrap:has([data-title]) .code-copy { top: 46px; }
+.code-fold { border-radius: 12px; }
+.code-fold > summary { cursor: pointer; list-style: none; padding: 7px 14px; font-size: 12.5px;
+  color: var(--text-3); background: color-mix(in srgb, var(--brand) 5%, var(--card));
+  border: 1px solid var(--border); border-bottom: none; border-radius: 12px 12px 0 0;
+  user-select: none; }
+.code-fold > summary::before { content: "▸ "; }
+.code-fold[open] > summary::before { content: "▾ "; }
+.code-fold > summary::-webkit-details-marker { display: none; }
+.code-fold[open] > summary { border-bottom: 1px dashed var(--border); }
+.code-fold[open] .astro-code { border-top-left-radius: 0; border-top-right-radius: 0; }
+
+/* line numbers via CSS counters (zero JS) */
+.astro-code.line-numbers { counter-reset: ln; }
+.astro-code.line-numbers .line { display: inline-block; width: 100%; }
+.astro-code.line-numbers .line::before { counter-increment: ln; content: counter(ln);
+  display: inline-block; width: 1.6em; margin-right: 1.4em; text-align: right;
+  opacity: 0.4; user-select: none; font-size: 0.86em; }
+
+/* real cover images (fallback stays gradient + glyph) */
+.post-card .cover img, .post-row .thumb img, .feat-post .fc img,
+.article-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.article-cover.has-img { height: auto; }
+.article-cover.has-img img { height: auto; border-radius: var(--radius); }
+.post-card .cover:has(img)::after, .post-row .thumb:has(img)::after,
+.feat-post .fc:has(img)::after, .article-cover:has(img)::after { display: none; }
+
+/* dim bright screenshots in dark mode (lightbox shows full brightness) */
+[data-theme="dark"] .prose img { filter: brightness(0.85) saturate(0.95); }
+
+/* last-updated chip: hidden in the single-line meta on narrow screens */
+@media (max-width: 860px) { .article-meta .upd { display: none; } }
+
+/* project detail page */
+.proj-detail-top { display: flex; align-items: center; gap: 18px; }
+.proj-detail-top .logo { width: 64px; height: 64px; border-radius: 18px; flex: none; }
+.proj-detail-top h1 { font-size: 30px; }
+.proj-detail-desc { color: var(--text-2); margin: 16px 0 12px; font-size: 15px; }
+.proj-detail-top .tech-chips { margin-bottom: 16px; }
+.proj-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 26px; }

@@ -77,17 +77,20 @@ for (let w = 0; w < 26; w++) {
         <div class="card about-block reveal" style="margin-bottom:0">
           <div class="section-title"><Icon name="mail" /> 找到我</div>
           <div class="contact-cards">
-            <a class="card contact-card" style="box-shadow:none" href={SITE.author.github} target="_blank" rel="noopener">
+            <a class="card contact-card" href={SITE.author.github} target="_blank" rel="noopener">
               <Icon name="github" />
-              <b>GitHub</b>@{SITE.author.handle}
+              <b>GitHub</b>
+              <span class="val">@{SITE.author.handle}</span>
             </a>
-            <a class="card contact-card" style="box-shadow:none" href={`mailto:${SITE.author.email}`}>
+            <a class="card contact-card" href={`mailto:${SITE.author.email}`}>
               <Icon name="mail" />
-              <b>Email</b>{SITE.author.email}
+              <b>Email</b>
+              <span class="val">{SITE.author.email}</span>
             </a>
-            <a class="card contact-card" style="box-shadow:none" href="/archive/">
+            <a class="card contact-card" href="/archive/">
               <Icon name="archive" />
-              <b>归档</b>全部文章
+              <b>归档</b>
+              <span class="val">全部文章</span>
             </a>
           </div>
         </div>

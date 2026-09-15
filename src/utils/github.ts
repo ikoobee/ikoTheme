@@ -11,8 +11,9 @@
  *     still show real data
  *  4. deterministic placeholder      — flagged "示意" in the UI
  *
- * On any successful network fetch the snapshot file is rewritten, so the
- * committed data drifts toward reality on every local build.
+ * A committed snapshot younger than 24h short-circuits the network entirely
+ * (renders must never block on api.github.com — set GITHUB_HEAT_REFRESH=1 to
+ * force a re-fetch); any successful fetch rewrites the snapshot.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -75,6 +76,7 @@ async function fetchGraphQL(handle: string, from: Date, to: Date): Promise<Map<s
         query,
         variables: { u: handle, from: from.toISOString(), to: to.toISOString() },
       }),
+      signal: AbortSignal.timeout(4000),
     });
     if (!res.ok) return null;
     const weeks =
@@ -97,7 +99,10 @@ async function fetchRest(handle: string): Promise<Map<string, number> | null> {
     for (let page = 1; page <= 3; page++) {
       const res = await fetch(
         `https://api.github.com/users/${handle}/events/public?per_page=100&page=${page}`,
-        { headers: { accept: "application/vnd.github+json", "user-agent": "ikoTheme" } },
+        {
+          headers: { accept: "application/vnd.github+json", "user-agent": "ikoTheme" },
+          signal: AbortSignal.timeout(4000),
+        },
       );
       if (!res.ok) return null;
       const events = (await res.json()) as Array<{
@@ -124,14 +129,21 @@ interface Snapshot {
   days: { date: string; count: number }[];
 }
 
-function readSnapshot(): Map<string, number> | null {
+function readSnapshotRaw(): Snapshot | null {
   try {
     const snap = JSON.parse(fs.readFileSync(path.resolve(SNAPSHOT), "utf8")) as Snapshot;
-    if (!Array.isArray(snap.days)) return null;
-    return new Map(snap.days.filter((d) => d.count > 0).map((d) => [d.date, d.count]));
+    return Array.isArray(snap.days) ? snap : null;
   } catch {
     return null;
   }
+}
+function readSnapshot(): Map<string, number> | null {
+  const snap = readSnapshotRaw();
+  if (!snap) return null;
+  return new Map(snap.days.filter((d) => d.count > 0).map((d) => [d.date, d.count]));
+}
+function readSnapshotMeta(): string {
+  return readSnapshotRaw()?.fetchedAt ?? new Date(0).toISOString();
 }
 
 function writeSnapshot(counts: Map<string, number>) {
@@ -160,6 +172,16 @@ export async function githubHeat(
   const days = buildRange();
   const from = days[0]!;
   const to = days[days.length - 1]!;
+  const range = `${dayKey(from)} ~ ${dayKey(to)}`;
+
+  // fresh committed snapshot (<24h, no GITHUB_HEAT_REFRESH) skips the network
+  // entirely so page renders never block on api.github.com
+  const force = process.env.GITHUB_HEAT_REFRESH === "1";
+  const snap = readSnapshot();
+  const snapAge = snap ? Date.now() - new Date(readSnapshotMeta()).getTime() : Infinity;
+  if (snap && !force && snapAge < 24 * 3600 * 1000) {
+    return { days: toLevels(snap), source: "snapshot", range };
+  }
 
   let counts = await fetchGraphQL(handle, from, to);
   let source: HeatSource = "graphql";
@@ -169,13 +191,12 @@ export async function githubHeat(
   }
   if (counts) {
     writeSnapshot(counts);
-    return { days: toLevels(counts), source, range: `${dayKey(from)} ~ ${dayKey(to)}` };
+    return { days: toLevels(counts), source, range };
   }
 
-  const snap = readSnapshot();
   if (snap) {
-    return { days: toLevels(snap), source: "snapshot", range: `${dayKey(from)} ~ ${dayKey(to)}` };
+    return { days: toLevels(snap), source: "snapshot", range };
   }
 
-  return { days: toLevels(demoCounts()), source: "demo", range: `${dayKey(from)} ~ ${dayKey(to)}` };
+  return { days: toLevels(demoCounts()), source: "demo", range };
 }

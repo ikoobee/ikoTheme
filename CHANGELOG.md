@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Real GitHub activity heatmap on the about page (last 26 weeks), fetched at
+  build time from official endpoints with layered fallback: GraphQL
+  contributionsCalendar (when `GITHUB_TOKEN` is set) > anonymous REST public
+  events (~90-day window) > committed snapshot (`data/github-contributions.json`,
+  refreshed by local builds) > deterministic placeholder; per-day tooltips
+  carry real dates and counts
+
 - Mermaid diagrams: ` ```mermaid ` code blocks render client-side, lazy —
   the ESM bundle (~600KB) only loads when a diagram nears the viewport and
   only on pages containing one; theme-aware (dark/default)

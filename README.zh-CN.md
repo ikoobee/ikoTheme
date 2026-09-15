@@ -44,7 +44,10 @@ npm run dev        # http://localhost:4321
 无图自动回退渐变占位）；`series` + `seriesOrder` 组织系列文章（文中导航盒）；
 `updated: 2026-09-04` 可选字段展示「最后更新于」；动态支持 `images` 配图。
 阅读时：目录滚动高亮、阅读量（复用 Waline/Twikoo，`COMMENTS.views` 开关）、
-留言板页（`/guestbook`，依赖评论已启用）。
+留言板页（`/guestbook`，依赖评论已启用）。关于页的 GitHub 活动热力图是
+**构建时拉取的真实数据**：默认匿名公开事件（近 90 天），设置 `GITHUB_TOKEN`
+环境变量后升级为精确的 Contributions 日计数（半年）；每次本地构建会把结果
+快照进 `data/github-contributions.json` 随仓库提交，离线/限流时自动回退。
 
 站点身份（名称、作者、导航、签名档、首页侧边栏板块……）统一在
 [`src/config/site.ts`](src/config/site.ts) 一处配置（侧边栏由 `SIDEBAR` 数组

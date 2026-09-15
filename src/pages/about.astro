@@ -2,14 +2,18 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/base/Icon.astro";
 import { SITE, SKILLS, TIMELINE } from "../config/site";
+import { githubHeat } from "../utils/github";
 
-// decorative activity heatmap (placeholder levels, replaced by real data in a later milestone)
-const heat: number[] = [];
-for (let w = 0; w < 26; w++) {
-  for (let d = 0; d < 7; d++) {
-    heat.push(((w * 7 + d) * 2654435761) % 5);
-  }
-}
+// real GitHub activity (GraphQL w/ token > anonymous REST > committed snapshot > demo)
+const gh = await githubHeat(SITE.author.handle);
+const sourceLabel =
+  gh.source === "graphql"
+    ? "GitHub Contributions"
+    : gh.source === "rest"
+      ? "GitHub 公开事件（近 90 天）"
+      : gh.source === "snapshot"
+        ? "GitHub 活动（历史快照）"
+        : "示意数据";
 ---
 
 <BaseLayout title="关于" description={SITE.description}>
@@ -33,10 +37,14 @@ for (let w = 0; w < 26; w++) {
           <div class="skill-tags">
             {SKILLS.map((s) => <span class="chip">{s}</span>)}
           </div>
-          <div class="heatmap" aria-label="GitHub 活跃度示意">
-            {heat.map((lv) => <i class={lv > 0 ? `lv${lv}` : ""} title={`活跃度 ${lv}/4`} />)}
+          <div class="heatmap" aria-label="GitHub 活跃度">
+            {gh.days.map((d) => (
+              <i class={d.level > 0 ? `lv${d.level}` : ""} title={`${d.date} · ${d.count} 次贡献`} />
+            ))}
           </div>
-          <p style="font-size:11px;color:var(--text-3);margin-top:8px">近半年 GitHub 活动（示意数据）</p>
+          <p style="font-size:11px;color:var(--text-3);margin-top:8px">
+            近半年 GitHub 活动 · {sourceLabel} · {gh.range}
+          </p>
         </div>
 
         <div class="card aside-block">

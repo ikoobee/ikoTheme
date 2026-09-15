@@ -370,8 +370,10 @@ svg.ic { width: 1em; height: 1em; vertical-align: -0.14em; flex: none; }
 .about-side h3 { font-size: 19px; }
 .about-side .bio { font-size: 13px; color: var(--text-3); margin-top: 6px; }
 .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 14px; }
-.heatmap { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 10px); gap: 3px; justify-content: center; margin-top: 16px; }
-.heatmap i { width: 10px; height: 10px; border-radius: 2.5px; background: var(--bg-soft); }
+/* heatmap: columns share the container width (1fr auto-columns + square
+   cells via aspect-ratio), so 26 weeks never overflow the sidebar card */
+.heatmap { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, auto); grid-auto-columns: 1fr; gap: 3px; margin-top: 16px; }
+.heatmap i { width: 100%; aspect-ratio: 1; border-radius: 2.5px; background: var(--bg-soft); }
 .heatmap i.lv1 { background: rgba(99, 102, 241, 0.28); }
 .heatmap i.lv2 { background: rgba(99, 102, 241, 0.5); }
 .heatmap i.lv3 { background: rgba(99, 102, 241, 0.72); }

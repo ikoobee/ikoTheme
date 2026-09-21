@@ -1,8 +1,6 @@
 # ikoTheme
 
 An Astro blog theme where posts and projects are both first-class citizens.
-Design prototype & full tech spec: `d:\dev\prototypes\ikoTheme-design\`（定稿事实源，
-视觉规格与里程碑以其为准）.
 
 ## 快速命令
 
